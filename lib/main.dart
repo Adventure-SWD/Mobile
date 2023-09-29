@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:metrofood/login_page.dart';
+import 'package:metrofood/regis_page.dart';
 
 //screens
 import './home_page.dart';
@@ -18,8 +20,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const MyHomePage(),
+      home: const LoginScreen(),
       routes: {
+        LoginScreen.routeName: (ctx) => const LoginScreen(),
+        RegisterScreen.routeName: (ctx) => const RegisterScreen(),
         MyHomePage.routeName: (ctx) => const MyHomePage(),
       },
     );
