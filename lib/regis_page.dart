@@ -5,7 +5,7 @@ class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
 
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
@@ -18,7 +18,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Đăng ký'),
+        title: const Text('Đăng ký'),
       ),
       body: Form(
         key: _formKey,
@@ -28,7 +28,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             children: [
               TextFormField(
                 controller: _usernameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Tên đăng nhập',
                   prefixIcon: Icon(Icons.person),
                 ),
@@ -41,7 +41,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               TextFormField(
                 controller: _phoneNumberController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Số điện thoại',
                   prefixIcon: Icon(Icons.phone),
                 ),
@@ -56,9 +56,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 controller: _passwordController,
                 decoration: InputDecoration(
                   labelText: 'Mật khẩu',
-                  prefixIcon: Icon(Icons.lock),
+                  prefixIcon: const Icon(Icons.lock),
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.visibility),
+                    icon: const Icon(Icons.visibility),
                     onPressed: () {
                       setState(() {
                         //_passwordController.obscureText = !_passwordController.obscureText;
@@ -73,7 +73,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
@@ -86,7 +86,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   // test không cần đăng kí, xóa sau
                   Navigator.of(context).pushNamed('/home-page');
                 },
-                child: Text('Đăng ký'),
+                child: const Text('Đăng ký'),
               ),
             ],
           ),

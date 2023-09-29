@@ -5,7 +5,7 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
@@ -17,7 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
+        title: const Row(
           children: [
             SizedBox(width: 10),
             Text('Đăng nhập'),
@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               TextFormField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Email',
                   prefixIcon: Icon(Icons.person),
                 ),
@@ -47,9 +47,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _passwordController,
                 decoration: InputDecoration(
                   labelText: 'Mật khẩu',
-                  prefixIcon: Icon(Icons.lock),
+                  prefixIcon: const Icon(Icons.lock),
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.visibility),
+                    icon: const Icon(Icons.visibility),
                     onPressed: () {
                       setState(() {
                         //_passwordController.obscureText = !_passwordController.obscureText;
@@ -64,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
@@ -77,26 +77,26 @@ class _LoginScreenState extends State<LoginScreen> {
                   // test trước, login không cần tk,mk
                   Navigator.of(context).pushNamed('/home-page');
                 },
-                child: Text('Đăng nhập'),
+                child: const Text('Đăng nhập'),
               ),
               TextButton(
                 onPressed: () {
                   // Đi tới màn hình đăng ký
                   Navigator.of(context).pushNamed('/regis-page');
                 },
-                child: Text('Đăng ký'),
+                child: const Text('Đăng ký'),
               ),
-              Divider(),
+              const Divider(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
                     onPressed: () {},
-                    child: Text('Quên mật khẩu?'),
+                    child: const Text('Quên mật khẩu?'),
                   ),
                   TextButton(
                     onPressed: () {},
-                    child: Text('Trợ giúp'),
+                    child: const Text('Trợ giúp'),
                   ),
                 ],
               ),

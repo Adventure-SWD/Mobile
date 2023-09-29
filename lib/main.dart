@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:metrofood/login_page.dart';
-import 'package:metrofood/regis_page.dart';
 
 //screens
 import './home_page.dart';
+import './login_page.dart';
+import './regis_page.dart';
 
 void main() => runApp(const MyApp());
 
