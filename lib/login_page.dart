@@ -1,109 +1,197 @@
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   static const routeName = '/login-page';
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  Widget build(BuildContext context) {
+    final bool isSmallScreen = MediaQuery.of(context).size.width < 600;
+
+    return Scaffold(
+        body: Center(
+            child: isSmallScreen
+                ? Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      _Logo(),
+                      _FormContent(),
+                    ],
+                  )
+                : Container(
+                    padding: const EdgeInsets.all(32.0),
+                    constraints: const BoxConstraints(maxWidth: 800),
+                    child: Row(
+                      children: const [
+                        Expanded(child: _Logo()),
+                        Expanded(
+                          child: Center(child: _FormContent()),
+                        ),
+                      ],
+                    ),
+                  )));
+  }
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+class _Logo extends StatelessWidget {
+  const _Logo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Row(
-          children: [
-            SizedBox(width: 10),
-            Text('Đăng nhập'),
-          ],
+    final bool isSmallScreen = MediaQuery.of(context).size.width < 600;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Image(
+          image: const AssetImage('images/logo.png'),
+          width: isSmallScreen ? 100 : 200,
+          height: isSmallScreen ? 100 : 200,
         ),
-      ),
-      body: Form(
-        key: _formKey,
-        child: Padding(
+        Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  prefixIcon: Icon(Icons.person),
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Vui lòng nhập email';
-                  }
-                  return null;
-                },
+          child: Text(
+            "Welcome to Metro Food!",
+            textAlign: TextAlign.center,
+            style: isSmallScreen
+                ? Theme.of(context).textTheme.headline5
+                : Theme.of(context)
+                    .textTheme
+                    .headline4
+                    ?.copyWith(color: Colors.black),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class _FormContent extends StatefulWidget {
+  const _FormContent({Key? key}) : super(key: key);
+
+  @override
+  State<_FormContent> createState() => __FormContentState();
+}
+
+class __FormContentState extends State<_FormContent> {
+  bool _isPasswordVisible = false;
+  bool _rememberMe = false;
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: const BoxConstraints(maxWidth: 300),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextFormField(
+              validator: (value) {
+                // add email validation
+                if (value == null || value.isEmpty) {
+                  return 'Please enter some text';
+                }
+
+                bool emailValid = RegExp(
+                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                    .hasMatch(value);
+                if (!emailValid) {
+                  return 'Please enter a valid email';
+                }
+
+                return null;
+              },
+              decoration: const InputDecoration(
+                labelText: 'Email',
+                hintText: 'Enter your email',
+                prefixIcon: Icon(Icons.email_outlined),
+                border: OutlineInputBorder(),
               ),
-              TextFormField(
-                controller: _passwordController,
-                decoration: InputDecoration(
-                  labelText: 'Mật khẩu',
-                  prefixIcon: const Icon(Icons.lock),
+            ),
+            _gap(),
+            TextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter some text';
+                }
+
+                if (value.length < 6) {
+                  return 'Password must be at least 6 characters';
+                }
+                return null;
+              },
+              obscureText: !_isPasswordVisible,
+              decoration: InputDecoration(
+                  labelText: 'Password',
+                  hintText: 'Enter your password',
+                  prefixIcon: const Icon(Icons.lock_outline_rounded),
+                  border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
-                    icon: const Icon(Icons.visibility),
+                    icon: Icon(_isPasswordVisible
+                        ? Icons.visibility_off
+                        : Icons.visibility),
                     onPressed: () {
                       setState(() {
-                        //_passwordController.obscureText = !_passwordController.obscureText;
+                        _isPasswordVisible = !_isPasswordVisible;
                       });
                     },
+                  )),
+            ),
+            _gap(),
+            CheckboxListTile(
+              value: _rememberMe,
+              onChanged: (value) {
+                if (value == null) return;
+                setState(() {
+                  _rememberMe = value;
+                });
+              },
+              title: const Text('Remember me'),
+              controlAffinity: ListTileControlAffinity.leading,
+              dense: true,
+              contentPadding: const EdgeInsets.all(0),
+            ),
+            _gap(),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4)),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text(
+                    'Sign in',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Vui lòng nhập mật khẩu';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    // Đăng nhập với email và mật khẩu
-                    // ...
-
-                    // Nếu đăng nhập thành công, chuyển hướng đến màn hình chính
-                    Navigator.of(context).pushNamed('/home');
-                  }
-                  // test trước, login không cần tk,mk
-                  Navigator.of(context).pushNamed('/home-page');
-                },
-                child: const Text('Đăng nhập'),
-              ),
-              TextButton(
                 onPressed: () {
-                  // Đi tới màn hình đăng ký
-                  Navigator.of(context).pushNamed('/regis-page');
+                  if (_formKey.currentState?.validate() ?? false) {
+                    /// do something
+                  }
+                  // Dùng để test, bấm chạy vào màn hình chính
+                  Navigator.pushNamed(context, '/home-page');
                 },
-                child: const Text('Đăng ký'),
               ),
-              const Divider(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text('Quên mật khẩu?'),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text('Trợ giúp'),
-                  ),
-                ],
+            ),
+            SizedBox(width: double.infinity,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/regis-page');
+                },
+                child: const Text('Not Account? Create one'),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
+
+  Widget _gap() => const SizedBox(height: 16);
 }
