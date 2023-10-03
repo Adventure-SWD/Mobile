@@ -28,13 +28,8 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: EdgeInsets.all(8.0),
         child: SearchBarApp(),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+      bottomNavigationBar: Material3BottomNav(
+        
       ),
     );
   }
