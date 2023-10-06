@@ -43,6 +43,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   // khai báo biến
+  bool _showAppBar = true;
   int _currentIndex = 0;
 
   final screen = [
@@ -55,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: _showAppBar ? AppBar(
         leading: IconButton(
           icon: const Icon(Icons.menu),
           onPressed: () {
@@ -74,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
         centerTitle: true,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
-      ),
+      ) : null,
 
       body: screen[_currentIndex],
 
@@ -87,6 +88,11 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: (index){
           setState(() {
             _currentIndex = index;
+            if (_currentIndex == 3) {
+              _showAppBar = false;
+            } else {
+              _showAppBar = true;
+            }
           });
         },
         items: const [
