@@ -1,35 +1,25 @@
 import 'package:flutter/material.dart';
-
-//Screen
 import 'package:metrofood/search_bar_app.dart';
-import 'app_bar.dart';
-import 'bottom_navigation_bar.dart';
 
-class MyHomePage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   static const routeName = '/home-page';
-
-  const MyHomePage({
-    super.key
-  });
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<StatefulWidget> createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _currentIndex = 0;
-  bool isDark = false;
-
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(),
-      body: const Padding(
-        padding: EdgeInsets.all(8.0),
-        child: SearchBarApp(),
-      ),
-      bottomNavigationBar: Material3BottomNav(
-        
+    return SafeArea(
+      child: Scaffold(
+        body: Padding(
+            padding: EdgeInsets.only(bottom: 25),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: SearchBarApp(),
+            )),
       ),
     );
   }

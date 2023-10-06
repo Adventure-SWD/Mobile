@@ -34,14 +34,19 @@ const _navBarItems = [
     label: 'Home',
   ),
   NavigationDestination(
-    icon: Icon(Icons.bookmark_border_outlined),
-    selectedIcon: Icon(Icons.bookmark_rounded),
-    label: 'Bookmarks',
+    icon: Icon(Icons.subway_outlined),
+    selectedIcon: Icon(Icons.subway_rounded),
+    label: 'Subway',
   ),
   NavigationDestination(
     icon: Icon(Icons.shopping_bag_outlined),
     selectedIcon: Icon(Icons.shopping_bag),
     label: 'Cart',
+  ),
+  NavigationDestination(
+    icon: Icon(Icons.notifications_outlined),
+    selectedIcon: Icon(Icons.notifications_rounded),
+    label: 'Notification',
   ),
   NavigationDestination(
     icon: Icon(Icons.person_outline_rounded),

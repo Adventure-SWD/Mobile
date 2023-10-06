@@ -175,7 +175,7 @@ class __FormContentState extends State<_FormContent> {
                     /// do something
                   }
                   // Dùng để test, bấm chạy vào màn hình chính
-                  Navigator.pushNamed(context, '/home-page');
+                  Navigator.pushNamed(context, '/main-page');
                 },
               ),
             ),
