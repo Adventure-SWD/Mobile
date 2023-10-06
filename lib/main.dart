@@ -50,7 +50,6 @@ class _MyHomePageState extends State<MyHomePage> {
     const SettingsPage(),
     const NewsFeedPage(),
     const ProfilePage(),
-    const RegisterScreen()
   ];
 
   @override
@@ -98,10 +97,6 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.subway),
             label: "Subway",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_bag),
-            label: "Cart",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
