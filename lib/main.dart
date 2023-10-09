@@ -3,12 +3,21 @@ import 'package:metrofood/notification_page.dart';
 import 'package:metrofood/profile_page.dart';
 import 'package:metrofood/settingPage.dart';
 
+//imports firebase
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 //screens
 import './home_page.dart';
 import './login_page.dart';
 import './regis_page.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -35,7 +44,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   static const routeName = '/main-page';
   const MyHomePage({super.key});
-
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
