@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:metrofood/notification_page.dart';
 import 'package:metrofood/profile_page.dart';
@@ -12,10 +13,40 @@ import './home_page.dart';
 import './login_page.dart';
 import './regis_page.dart';
 
-void main() {
-  Firebase.initializeApp(
+Future<void> main() async {
+  await WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // Ideal time to init
+  await FirebaseAuth.instance.useAuthEmulator('mobile-project-ffb9d.firebaseapp.com', 9099);
+  FirebaseAuth.instance
+      .authStateChanges()
+      .listen((User? user) {
+    if(user == null) {
+      print('User is currently signed out!');
+    } else {
+      print('User signed in!');
+    }
+  });
+  // FirebaseAuth.instance
+  //     .idTokenChanges()
+  //     .listen((User? user) {
+  //   if (user == null) {
+  //     print('User is currently signed out!');
+  //   } else {
+  //     print('User is signed in!');
+  //   }
+  // });
+  // FirebaseAuth.instance
+  //     .userChanges()
+  //     .listen((User? user) {
+  //   if (user == null) {
+  //     print('User is currently signed out!');
+  //   } else {
+  //     print('User is signed in!');
+  //   }
+  // });
   runApp(const MyApp());
 }
 

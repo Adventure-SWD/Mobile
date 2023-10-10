@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -76,7 +77,8 @@ class _FormContent extends StatefulWidget {
 class __FormContentState extends State<_FormContent> {
   bool _isPasswordVisible = false;
   bool _rememberMe = false;
-
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -90,6 +92,7 @@ class __FormContentState extends State<_FormContent> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextFormField(
+              controller: emailController,
               validator: (value) {
                 // add email validation
                 if (value == null || value.isEmpty) {
@@ -114,6 +117,7 @@ class __FormContentState extends State<_FormContent> {
             ),
             _gap(),
             TextFormField(
+              controller: passwordController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter some text';
@@ -175,7 +179,14 @@ class __FormContentState extends State<_FormContent> {
                     /// do something
                   }
                   // Dùng để test, bấm chạy vào màn hình chính
-                  Navigator.pushNamed(context, '/main-page');
+                  String email = emailController.text;
+                  String password = passwordController.text;
+                  Future<bool> loginStatus = signIn(email, password);
+                  if(loginStatus == true) {
+                    Navigator.pushNamed(context, '/main-page');
+                  } else {
+                    print('khong dang nhap duoc');
+                  }
                 },
               ),
             ),
@@ -194,4 +205,27 @@ class __FormContentState extends State<_FormContent> {
   }
 
   Widget _gap() => const SizedBox(height: 16);
+}
+
+
+Future<bool> signIn(String email,String password) async {
+  try {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+      password: password,
+
+    );
+    return true;
+  } on FirebaseAuthException catch(e) {
+    var errorCode = e.code;
+    var errorMessage = e.message;
+    if(errorCode == 'auth/wrong-password'){
+      print(errorCode);
+      return false;
+    }
+    else{
+      print(errorMessage);
+      return false;
+    }
+  }
 }
