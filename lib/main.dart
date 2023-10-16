@@ -2,7 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:metrofood/notification_page.dart';
 import 'package:metrofood/profile_page.dart';
-import 'package:metrofood/settingPage.dart';
+import 'package:metrofood/route_select.dart';
+import 'package:metrofood/setting_page.dart';
 
 //imports firebase
 import 'package:firebase_core/firebase_core.dart';
@@ -87,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final screen = [
     const HomePage(),
-    const SettingsPage(),
+    const RouteSelectPage(),
     const NewsFeedPage(),
     const ProfilePage(),
   ];

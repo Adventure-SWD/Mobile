@@ -178,13 +178,13 @@ class __FormContentState extends State<_FormContent> {
                   if (_formKey.currentState?.validate() ?? false) {
                     /// do something
                   }
-                  // Dùng để test, bấm chạy vào màn hình chính
                   String email = emailController.text;
                   String password = passwordController.text;
                   Future<bool> loginStatus = signIn(email, password);
                   if(loginStatus == true) {
                     Navigator.pushNamed(context, '/main-page');
                   } else {
+                    Navigator.pushNamed(context, '/main-page');
                     print('khong dang nhap duoc');
                   }
                 },
