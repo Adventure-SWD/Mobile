@@ -182,7 +182,7 @@ class __FormContentState extends State<_FormContent> {
                   }
                   String email = emailController.text;
                   String password = passwordController.text;
-                  Future<bool> loginStatus = signIn(email, password);
+                  Future loginStatus = signIn();
                   if (loginStatus == true) {
                     Navigator.pushNamed(context, '/main-page');
                   } else {
@@ -208,6 +208,7 @@ class __FormContentState extends State<_FormContent> {
   }
 
   Widget _gap() => const SizedBox(height: 16);
+
   Future signIn() async {
     try {
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(

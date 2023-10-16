@@ -22,31 +22,31 @@ class _RouteSelectPage extends State<RouteSelectPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
         child: Container(
-          width: 300,
-          padding: const EdgeInsets.all(8.0),
+          width: double.maxFinite,
+          padding: const EdgeInsets.all(30.0),
           child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _title("Selected Route"),
+                _title("Chọn tuyến đường"),
                 Container(
-                    padding: const EdgeInsets.all(8.0),
+                    width: 600,
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(8.0)),
                     child: _dropDownRoute(underline: Container())),
-                _title("Selected Time"),
+                _title("Chọn thời gian"),
                 Container(
-                    padding: const EdgeInsets.all(8.0),
+                    width: 700,
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(8.0)),
                     child: _dropDownTime(underline: Container())),
-                _title("Selected Station"),
+                _title("Chọn điểm đến"),
                 Container(
-                    padding: const EdgeInsets.all(8.0),
+                    width: 700,
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(8.0)),
