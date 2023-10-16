@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -181,7 +183,7 @@ class __FormContentState extends State<_FormContent> {
                   String email = emailController.text;
                   String password = passwordController.text;
                   Future<bool> loginStatus = signIn(email, password);
-                  if(loginStatus == true) {
+                  if (loginStatus == true) {
                     Navigator.pushNamed(context, '/main-page');
                   } else {
                     Navigator.pushNamed(context, '/main-page');
@@ -190,7 +192,8 @@ class __FormContentState extends State<_FormContent> {
                 },
               ),
             ),
-            SizedBox(width: double.infinity,
+            SizedBox(
+              width: double.infinity,
               child: TextButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/regis-page');
@@ -205,27 +208,18 @@ class __FormContentState extends State<_FormContent> {
   }
 
   Widget _gap() => const SizedBox(height: 16);
-}
-
-
-Future<bool> signIn(String email,String password) async {
-  try {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-      password: password,
-
-    );
-    return true;
-  } on FirebaseAuthException catch(e) {
-    var errorCode = e.code;
-    var errorMessage = e.message;
-    if(errorCode == 'auth/wrong-password'){
-      print(errorCode);
-      return false;
-    }
-    else{
-      print(errorMessage);
-      return false;
+  Future signIn() async {
+    try {
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim());
+      print((credential.credential ?? null).toString());
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provinded for that user.');
+      }
     }
   }
 }

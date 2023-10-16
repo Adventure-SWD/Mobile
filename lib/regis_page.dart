@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class RegisterScreen extends StatelessWidget {
   static const routeName = '/regis-page';
@@ -76,6 +78,8 @@ class _FormContent extends StatefulWidget {
 class __FormContentState extends State<_FormContent> {
   bool _isPasswordVisible = false;
   bool _rememberMe = false;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -99,6 +103,7 @@ class __FormContentState extends State<_FormContent> {
             ),
             _gap(),
             TextFormField(
+              controller: emailController,
               validator: (value) {
                 // add email validation
                 if (value == null || value.isEmpty) {
@@ -123,6 +128,7 @@ class __FormContentState extends State<_FormContent> {
             ),
             _gap(),
             TextFormField(
+              controller: passwordController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter some text';
@@ -218,7 +224,8 @@ class __FormContentState extends State<_FormContent> {
               width: double.infinity,
               child: TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/login-page');
+                  signUp();
+                  // Navigator.pushNamed(context, '/login-page');
                 },
                 child: const Text('Already have an account? Sign in'),
               ),
@@ -230,4 +237,15 @@ class __FormContentState extends State<_FormContent> {
   }
 
   Widget _gap() => const SizedBox(height: 16);
+  Future signUp() async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim()
+      );
+    } on FirebaseAuthException catch (e) {
+      print(e);
+
+    }
+  }
 }

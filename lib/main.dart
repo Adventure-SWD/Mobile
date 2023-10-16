@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:metrofood/cart_page.dart';
 import 'package:metrofood/notification_page.dart';
 import 'package:metrofood/profile_page.dart';
 import 'package:metrofood/route_select.dart';
@@ -13,6 +14,8 @@ import 'firebase_options.dart';
 import './home_page.dart';
 import './login_page.dart';
 import './regis_page.dart';
+import './transaction_page.dart';
+import './CategoriesPage.dart';
 
 Future<void> main() async {
   await WidgetsFlutterBinding.ensureInitialized();
@@ -69,6 +72,9 @@ class MyApp extends StatelessWidget {
         RegisterScreen.routeName: (ctx) => const RegisterScreen(),
         HomePage.routeName: (ctx) => const HomePage(),
         MyHomePage.routeName: (ctx) => const MyHomePage(),
+        TransactionPage.routeName: (ctx) => const TransactionPage(),
+        CategoriesPage.routeName: (ctx) => const CategoriesPage(),
+        CartPage.routeName: (ctx) => const CartPage(),
       },
     );
   }
