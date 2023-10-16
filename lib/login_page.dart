@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -179,14 +181,18 @@ class __FormContentState extends State<_FormContent> {
                     /// do something
                   }
                   // Dùng để test, bấm chạy vào màn hình chính
-                  String email = emailController.text;
-                  String password = passwordController.text;
-                  Future<bool> loginStatus = signIn(email, password);
-                  if(loginStatus == true) {
-                    Navigator.pushNamed(context, '/main-page');
-                  } else {
-                    print('khong dang nhap duoc');
-                  }
+                  emailController.text = 'user12312@gmail.com';
+                  passwordController.text = '123456';
+                  signIn();
+                  // final user = FirebaseAuth.instance.currentUser;
+
+                  // if(loginStatus != "") {
+                  //   Navigator.pushNamed(context, '/main-page');
+                  Navigator.pushNamed(context, '/home-page');
+                    // print(loginStatus);
+                  // } else {
+                  //   print('khong dang nhap duoc');
+                  // }
                 },
               ),
             ),
@@ -205,27 +211,20 @@ class __FormContentState extends State<_FormContent> {
   }
 
   Widget _gap() => const SizedBox(height: 16);
-}
-
-
-Future<bool> signIn(String email,String password) async {
-  try {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-      password: password,
-
-    );
-    return true;
-  } on FirebaseAuthException catch(e) {
-    var errorCode = e.code;
-    var errorMessage = e.message;
-    if(errorCode == 'auth/wrong-password'){
-      print(errorCode);
-      return false;
-    }
-    else{
-      print(errorMessage);
-      return false;
+  Future signIn() async{
+    try {
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim()
+      );
+      print((credential.credential ?? null).toString());
+    } on FirebaseAuthException catch(e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provinded for that user.');
+      }
     }
   }
 }
+
