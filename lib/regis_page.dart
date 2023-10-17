@@ -89,9 +89,9 @@ class __FormContentState extends State<_FormContent> {
       constraints: const BoxConstraints(maxWidth: 300),
       child: Form(
         key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
+          /*mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,*/
           children: [
             TextFormField(
               decoration: const InputDecoration(
@@ -225,7 +225,7 @@ class __FormContentState extends State<_FormContent> {
               child: TextButton(
                 onPressed: () {
                   signUp();
-                  // Navigator.pushNamed(context, '/login-page');
+                  Navigator.pushNamed(context, '/login-page');
                 },
                 child: const Text('Already have an account? Sign in'),
               ),

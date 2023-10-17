@@ -13,7 +13,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      //appBar: CustomAppBar(),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

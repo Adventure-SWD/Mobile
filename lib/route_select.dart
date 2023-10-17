@@ -32,21 +32,21 @@ class _RouteSelectPage extends State<RouteSelectPage> {
               children: [
                 _title("Chọn tuyến đường"),
                 Container(
-                    width: 600,
+                    width: double.maxFinite,
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(8.0)),
                     child: _dropDownRoute(underline: Container())),
                 _title("Chọn thời gian"),
                 Container(
-                    width: 700,
+                    width: double.maxFinite,
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(8.0)),
                     child: _dropDownTime(underline: Container())),
                 _title("Chọn điểm đến"),
                 Container(
-                    width: 700,
+                    width: double.maxFinite,
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(8.0)),
