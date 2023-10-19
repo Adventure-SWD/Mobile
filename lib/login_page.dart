@@ -1,6 +1,8 @@
 import 'dart:ffi';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -82,7 +84,12 @@ class __FormContentState extends State<_FormContent> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -95,6 +102,7 @@ class __FormContentState extends State<_FormContent> {
           children: [
             TextFormField(
               controller: emailController,
+              textInputAction: TextInputAction.next,
               validator: (value) {
                 // add email validation
                 if (value == null || value.isEmpty) {
@@ -120,6 +128,7 @@ class __FormContentState extends State<_FormContent> {
             _gap(),
             TextFormField(
               controller: passwordController,
+              textInputAction: TextInputAction.done,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter some text';
@@ -177,23 +186,17 @@ class __FormContentState extends State<_FormContent> {
                   ),
                 ),
                 onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    /// do something
-                  }
-                  String email = emailController.text;
-                  String password = passwordController.text;
-                  Future loginStatus = signIn();
-                  if (loginStatus == true) {
-                    Navigator.pushNamed(context, '/main-page');
-                  } else {
-                    Navigator.pushNamed(context, '/main-page');
-                    print('khong dang nhap duoc');
-                  }
+                  // if (_formKey.currentState?.validate() ?? false) {
+                  //   /// do something
+                  // }
+                  // Dùng để test, bấm chạy vào màn hình chính
+                  emailController.text = 'user12312@gmail.com';
+                  passwordController.text = '123456';
+                  signIn();
                 },
               ),
             ),
-            SizedBox(
-              width: double.infinity,
+            SizedBox(width: double.infinity,
               child: TextButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/regis-page');
@@ -208,19 +211,23 @@ class __FormContentState extends State<_FormContent> {
   }
 
   Widget _gap() => const SizedBox(height: 16);
-
-  Future signIn() async {
+  Future signIn() async{
     try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      UserCredential credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text.trim(),
-          password: passwordController.text.trim());
+          password: passwordController.text.trim()
+      );
       print((credential.credential ?? null).toString());
-    } on FirebaseAuthException catch (e) {
+      Navigator.pushNamed(context, '/home-page');
+    } on FirebaseAuthException catch(e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
       } else if (e.code == 'wrong-password') {
         print('Wrong password provinded for that user.');
+      } else {
+        print(e.message);
       }
     }
   }
 }
+
