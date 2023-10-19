@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "409717113916",
-    "project_id": "mobile-project-ffb9d",
-    "storage_bucket": "mobile-project-ffb9d.appspot.com"
+    "project_number": "408679819932",
+    "project_id": "metrofood-4e6ca",
+    "storage_bucket": "metrofood-4e6ca.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:409717113916:android:1e5e74ab402d19d71fef39",
+        "mobilesdk_app_id": "1:408679819932:android:0fe034a1923be261509b59",
         "android_client_info": {
           "package_name": "com.example.metrofood"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCict9-Ou8RelaJkXUwNkLl4ceZnydrnbs"
+          "current_key": "AIzaSyBIZOxQ5sa0dwDcm409HXrnuUg449-E7zo"
         }
       ],
       "services": {

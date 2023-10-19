@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:metrofood/cart_page.dart';
 import 'package:metrofood/notification_page.dart';
@@ -22,35 +23,24 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   // Ideal time to init
-  await FirebaseAuth.instance.useAuthEmulator('mobile-project-ffb9d.firebaseapp.com', 9099);
-  FirebaseAuth.instance
-      .authStateChanges()
-      .listen((User? user) {
-    if(user == null) {
-      print('User is currently signed out!');
-    } else {
-      print('User signed in!');
-    }
-  });
+  await FirebaseAuth.instance.useAuthEmulator('metrofood-4e6ca.appspot.com', 9099);
   // FirebaseAuth.instance
-  //     .idTokenChanges()
+  //     .authStateChanges()
   //     .listen((User? user) {
-  //   if (user == null) {
+  //   if(user == null) {
   //     print('User is currently signed out!');
   //   } else {
-  //     print('User is signed in!');
+  //     print('User signed in!');
   //   }
   // });
-  // FirebaseAuth.instance
-  //     .userChanges()
-  //     .listen((User? user) {
-  //   if (user == null) {
-  //     print('User is currently signed out!');
-  //   } else {
-  //     print('User is signed in!');
-  //   }
-  // });
+  // FirebaseMessaging.onBackgroundMessage((message) => _firebaseMessagingBackgroundHandler(message));
   runApp(const MyApp());
+}
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print("Handling a background message: ${message.messageId}");
 }
 
 class MyApp extends StatelessWidget {
@@ -65,7 +55,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const LoginScreen(),
+      home: MainPage(),
       routes: {
         LoginScreen.routeName: (ctx) => const LoginScreen(),
         RegisterScreen.routeName: (ctx) => const RegisterScreen(),
@@ -75,6 +65,23 @@ class MyApp extends StatelessWidget {
         CategoriesPage.routeName: (ctx) => const CategoriesPage(),
         CartPage.routeName: (ctx) => const CartPage(),
       },
+    );
+  }
+}
+class MainPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return HomePage();
+          } else {
+            return LoginScreen();
+          }
+        },
+      ),
     );
   }
 }
