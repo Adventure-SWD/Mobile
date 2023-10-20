@@ -24,16 +24,23 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   // Ideal time to init
-  await FirebaseAuth.instance.useAuthEmulator('metrofood-4e6ca.appspot.com', 9099);
-  // FirebaseAuth.instance
-  //     .authStateChanges()
-  //     .listen((User? user) {
-  //   if(user == null) {
-  //     print('User is currently signed out!');
-  //   } else {
-  //     print('User signed in!');
-  //   }
-  // });
+  try {
+    await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+  } catch(e) {
+    print("Firebase emulator error at e");
+    print(e);
+  }
+
+  FirebaseAuth.instance
+      .authStateChanges()
+      .listen((User? user) {
+    if (user == null) {
+      print('User is currently signed out!');
+    } else {
+      print('User is signed in!');
+    }
+  });
+  // UserCredential userCredential = await FirebaseAuth.instance.signInAnonymously();
   // FirebaseMessaging.onBackgroundMessage((message) => _firebaseMessagingBackgroundHandler(message));
   runApp(const MyApp());
 }
@@ -77,9 +84,9 @@ class MainPage extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return HomePage();
+            return MyHomePage();
           } else {
-            return LoginScreen();
+            return MyHomePage();
           }
         },
       ),
