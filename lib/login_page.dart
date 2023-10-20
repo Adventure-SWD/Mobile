@@ -190,7 +190,7 @@ class __FormContentState extends State<_FormContent> {
                   //   /// do something
                   // }
                   // Dùng để test, bấm chạy vào màn hình chính
-                  emailController.text = 'user12312@gmail.com';
+                  emailController.text = 'user@gmail.com';
                   passwordController.text = '123456';
                   signIn();
                 },

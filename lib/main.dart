@@ -1,3 +1,4 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,9 @@ Future<void> main() async {
     print("Firebase emulator error at e");
     print(e);
   }
-
+  await FirebaseAppCheck.instance.activate(
+    androidProvider: AndroidProvider.debug
+  );
   FirebaseAuth.instance
       .authStateChanges()
       .listen((User? user) {
@@ -86,7 +89,7 @@ class MainPage extends StatelessWidget {
           if (snapshot.hasData) {
             return MyHomePage();
           } else {
-            return LoginScreen();
+            return MyHomePage();
           }
         },
       ),

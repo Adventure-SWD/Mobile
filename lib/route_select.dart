@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:metrofood/baseclient.dart';
+import 'Model/station.dart';
 
 class RouteSelectPage extends StatefulWidget{
   static const routeName = '/routeSelect-page';
@@ -51,6 +54,23 @@ class _RouteSelectPage extends State<RouteSelectPage> {
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(8.0)),
                     child: _dropDownStation(underline: Container())),
+                ElevatedButton(
+                  onPressed: () {
+                    var _response = BaseClient().get('/station/get-all-station',Station())
+                        .then((data) {
+                          if(data != null) {
+                            print('success $data');
+                          } else {
+                            print('null object');
+                          }
+                    })
+                        .catchError((err){
+                          print(err);
+                    });
+                    print(_response.toString());
+                  },
+                  child: Text('Text'),
+                ),
               ],
             ),
           ),
