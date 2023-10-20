@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:metrofood/Model/album.dart';
+import 'package:metrofood/Model/category.dart';
+import 'package:metrofood/Model/route.dart';
 import 'package:metrofood/baseclient.dart';
 import 'Model/station.dart';
 
-class RouteSelectPage extends StatefulWidget{
+class RouteSelectPage extends StatefulWidget {
   static const routeName = '/routeSelect-page';
   const RouteSelectPage({Key? key}) : super(key: key);
 
@@ -12,15 +15,31 @@ class RouteSelectPage extends StatefulWidget{
 }
 
 class _RouteSelectPage extends State<RouteSelectPage> {
-
+  late Future<Album> futureAlbum;
+  late Future<Categories> futureCategory;
+  late Future<List<Routes>> futureRoute;
+  List<String> listRoute = [];
   String? _selectedRoute;
-  final List<String> _route = ['Tuyến số 1', 'Tuyến số 2', 'Tuyến số 3'];
+
 
   String? _selectedTime;
   final List<String> _time = ['6:00 AM', '6:15 AM', '6:30 AM'];
 
   String? _selectedStation;
-  final List<String> _station = ['Ga số 1', 'Ga số 2', 'Ga số 3'];
+  final List<String> _station = [];
+
+  @override
+  void initState() {
+    super.initState();
+    futureAlbum = BaseClient().fetchAlbum();
+    futureCategory = BaseClient().fetchCategory();
+    futureRoute = BaseClient().fetchRoute();
+    futureRoute.then((routes) {
+      listRoute = routes.map((route) => route.fromLocation).toList();
+    }).catchError((error) {
+      // Handle any errors that might occur during the Future execution.
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +53,19 @@ class _RouteSelectPage extends State<RouteSelectPage> {
             child: Column(
               children: [
                 _title("Chọn tuyến đường"),
+                FutureBuilder<Categories>(
+                  future: futureCategory,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Text(
+                          snapshot.data!.categoryName + snapshot.data!.id);
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
+                    // By default, show a loading spinner.
+                    return const CircularProgressIndicator();
+                  },
+                ),
                 Container(
                     width: double.maxFinite,
                     decoration: BoxDecoration(
@@ -56,16 +88,16 @@ class _RouteSelectPage extends State<RouteSelectPage> {
                     child: _dropDownStation(underline: Container())),
                 ElevatedButton(
                   onPressed: () {
-                    var _response = BaseClient().get('/station/get-all-station',Station())
+                    var _response = BaseClient()
+                        .get('/route/get-all', List<Route>)
                         .then((data) {
-                          if(data != null) {
-                            print('success $data');
-                          } else {
-                            print('null object');
-                          }
-                    })
-                        .catchError((err){
-                          print(err);
+                      if (data != null) {
+                        print('success $data');
+                      } else {
+                        print('null object');
+                      }
+                    }).catchError((err) {
+                      print(err);
                     });
                     print(_response.toString());
                   },
@@ -110,9 +142,9 @@ class _RouteSelectPage extends State<RouteSelectPage> {
             });
           },
           hint: Text("Chọn tuyến đường", style: hintStyle),
-          items: _route
+          items: listRoute
               .map((route) =>
-              DropdownMenuItem<String>(value: route, child: Text(route)))
+                  DropdownMenuItem<String>(value: route, child: Text(route)))
               .toList());
 
   Widget _dropDownTime({
@@ -138,7 +170,7 @@ class _RouteSelectPage extends State<RouteSelectPage> {
           hint: Text("Chọn thời gian", style: hintStyle),
           items: _time
               .map((time) =>
-              DropdownMenuItem<String>(value: time, child: Text(time)))
+                  DropdownMenuItem<String>(value: time, child: Text(time)))
               .toList());
 
   Widget _dropDownStation({
@@ -163,7 +195,7 @@ class _RouteSelectPage extends State<RouteSelectPage> {
           },
           hint: Text("Chọn trạm tàu", style: hintStyle),
           items: _station
-              .map((station) =>
-              DropdownMenuItem<String>(value: station, child: Text(station)))
+              .map((station) => DropdownMenuItem<String>(
+                  value: station, child: Text(station)))
               .toList());
 }
