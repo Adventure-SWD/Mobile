@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:metrofood/Model/album.dart';
 import 'package:metrofood/Model/category.dart';
 import 'package:metrofood/Model/route.dart';
+import 'package:metrofood/Model/station.dart';
 
 const String baseUrl = 'http://13.210.56.232/api/v1';
 
@@ -26,7 +27,7 @@ class BaseClient {
   Future<dynamic> delete(String api) async{}
   Future<List<Routes>> fetchRoute() async {
     final response = await http.get(Uri.parse(
-        'https://brotherlike-navies.000webhostapp.com/people/people.php'));
+        'http://13.210.56.232/api/v1/route/get-all'));
 
     if (response.statusCode == 200) {
       final List result = json.decode(response.body);
@@ -35,12 +36,16 @@ class BaseClient {
       throw Exception('Failed to load data');
     }
   }
-  Future<List<String>> fetchFromLocations() async {
-    final routes = await fetchRoute();
+  Future<List<Station>> fetchStation() async {
+    final response = await http.get(Uri.parse(
+        'http://13.210.56.232/api/v1/station/get-all-station'));
 
-    List<String> fromLocations = routes.map((route) => route.fromLocation.toString()).toList();
-
-    return fromLocations;
+    if (response.statusCode == 200) {
+      final List result = json.decode(response.body);
+      return result.map((e) => Station.fromJson(e)).toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
   }
   Future<Categories> fetchCategory() async {
     final response = await http

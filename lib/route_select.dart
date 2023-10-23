@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:metrofood/Model/album.dart';
 import 'package:metrofood/Model/category.dart';
 import 'package:metrofood/Model/route.dart';
+import 'package:metrofood/Model/station.dart';
 import 'package:metrofood/baseclient.dart';
-import 'Model/station.dart';
 
 class RouteSelectPage extends StatefulWidget {
   static const routeName = '/routeSelect-page';
@@ -18,6 +17,8 @@ class _RouteSelectPage extends State<RouteSelectPage> {
   late Future<Album> futureAlbum;
   late Future<Categories> futureCategory;
   late Future<List<Routes>> futureRoute;
+  late Future<List<Station>> futureStation;
+
   List<String> listRoute = [];
   String? _selectedRoute;
 
@@ -26,19 +27,35 @@ class _RouteSelectPage extends State<RouteSelectPage> {
   final List<String> _time = ['6:00 AM', '6:15 AM', '6:30 AM'];
 
   String? _selectedStation;
-  final List<String> _station = [];
+  List<String> _station = [];
 
   @override
   void initState() {
+    initializeData();
     super.initState();
-    futureAlbum = BaseClient().fetchAlbum();
-    futureCategory = BaseClient().fetchCategory();
-    futureRoute = BaseClient().fetchRoute();
-    futureRoute.then((routes) {
-      listRoute = routes.map((route) => route.fromLocation).toList();
-    }).catchError((error) {
-      // Handle any errors that might occur during the Future execution.
-    });
+  }
+
+  Future<void> initializeData() async {
+    try {
+      futureAlbum = BaseClient().fetchAlbum();
+      futureCategory = BaseClient().fetchCategory();
+      futureRoute = BaseClient().fetchRoute();
+      futureStation = BaseClient().fetchStation();
+      await futureRoute.then((routes) {
+        setState(() {
+          listRoute = routes.map((route) => '${route.fromLocation} đến ${route.toLocation}').toList();
+        });
+      }).catchError((error) {
+      });
+      await futureStation.then((stations) {
+        setState(() {
+          _station = stations.map((e) => e.stationData.stationName).toList();
+        });
+      }).catchError((error) {
+      });
+    } catch (error) {
+      print(error);
+    }
   }
 
   @override
@@ -53,25 +70,28 @@ class _RouteSelectPage extends State<RouteSelectPage> {
             child: Column(
               children: [
                 _title("Chọn tuyến đường"),
-                FutureBuilder<Categories>(
-                  future: futureCategory,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Text(
-                          snapshot.data!.categoryName + snapshot.data!.id);
-                    } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
-                    }
-                    // By default, show a loading spinner.
-                    return const CircularProgressIndicator();
-                  },
+                // FutureBuilder<Categories>(
+                //   future: futureCategory,
+                //   builder: (context, snapshot) {
+                //     if (snapshot.hasData) {
+                //       return Text(
+                //           snapshot.data!.categoryName + snapshot.data!.id
+                //       );
+                //     } else if (snapshot.hasError) {
+                //       return Text('${snapshot.error}');
+                //     }
+                //     // By default, show a loading spinner.
+                //     return const CircularProgressIndicator();
+                //   },
+                // ),
+                SingleChildScrollView(
+                  child: Container(
+                      width: double.maxFinite,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(8.0)),
+                      child: _dropDownRoute(underline: Container())),
                 ),
-                Container(
-                    width: double.maxFinite,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8.0)),
-                    child: _dropDownRoute(underline: Container())),
                 _title("Chọn thời gian"),
                 Container(
                     width: double.maxFinite,
@@ -88,20 +108,21 @@ class _RouteSelectPage extends State<RouteSelectPage> {
                     child: _dropDownStation(underline: Container())),
                 ElevatedButton(
                   onPressed: () {
-                    var _response = BaseClient()
-                        .get('/route/get-all', List<Route>)
-                        .then((data) {
-                      if (data != null) {
-                        print('success $data');
-                      } else {
-                        print('null object');
-                      }
-                    }).catchError((err) {
-                      print(err);
-                    });
-                    print(_response.toString());
+                    // var _response = BaseClient()
+                    //     .get('/route/get-all', List<Route>)
+                    //     .then((data) {
+                    //   if (data != null) {
+                    //     print('success $data');
+                    //   } else {
+                    //     print('null object');
+                    //   }
+                    // }).catchError((err) {
+                    //   print(err);
+                    // });
+                    // print(_response.toString());
+                    print(_station.toList());
                   },
-                  child: Text('Text'),
+                  child: const Text('Text'),
                 ),
               ],
             ),
