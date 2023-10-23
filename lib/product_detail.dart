@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:metrofood/cart_page.dart';
 
 class ProductDetailPage extends StatelessWidget {
   final int heroTag;
@@ -77,11 +78,25 @@ class ProductDetailPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const CartPage(),
+                              ),
+                            );
+                          },
                           child: const Text("Thêm vào giỏ hàng"),
                         ),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const CartPage(),
+                              ),
+                            );
+                          },
                           child: const Text("Mua ngay"),
                         ),
                       ],
