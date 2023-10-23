@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:metrofood/regis_page.dart';
 
 class LoginScreen extends StatelessWidget {
   static const routeName = '/login-page';
@@ -16,9 +17,9 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
         body: Center(
             child: isSmallScreen
-                ? Column(
+                ? const Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       _Logo(),
                       _FormContent(),
                     ],
@@ -26,8 +27,8 @@ class LoginScreen extends StatelessWidget {
                 : Container(
                     padding: const EdgeInsets.all(32.0),
                     constraints: const BoxConstraints(maxWidth: 800),
-                    child: Row(
-                      children: const [
+                    child: const Row(
+                      children: [
                         Expanded(child: _Logo()),
                         Expanded(
                           child: Center(child: _FormContent()),
@@ -199,7 +200,12 @@ class __FormContentState extends State<_FormContent> {
             SizedBox(width: double.infinity,
               child: TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/regis-page');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RegisterScreen(),
+                    ),
+                  );
                 },
                 child: const Text('Not Account? Create one'),
               ),

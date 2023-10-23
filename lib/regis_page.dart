@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:metrofood/login_page.dart';
+
 
 class RegisterScreen extends StatelessWidget {
   static const routeName = '/regis-page';
@@ -14,24 +15,24 @@ class RegisterScreen extends StatelessWidget {
         body: Center(
             child: isSmallScreen
                 ? const Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _Logo(),
-                      _FormContent(),
-                    ],
-                  )
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _Logo(),
+                _FormContent(),
+              ],
+            )
                 : Container(
-                    padding: const EdgeInsets.all(32.0),
-                    constraints: const BoxConstraints(maxWidth: 800),
-                    child: const Row(
-                      children: [
-                        Expanded(child: _Logo()),
-                        Expanded(
-                          child: Center(child: _FormContent()),
-                        ),
-                      ],
-                    ),
-                  )));
+              padding: const EdgeInsets.all(32.0),
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: const Row(
+                children: [
+                  Expanded(child: _Logo()),
+                  Expanded(
+                    child: Center(child: _FormContent()),
+                  ),
+                ],
+              ),
+            )));
   }
 }
 
@@ -53,14 +54,14 @@ class _Logo extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            "Welcome to Metro Food!",
+            "Register",
             textAlign: TextAlign.center,
             style: isSmallScreen
-                ? Theme.of(context).textTheme.headlineSmall
+                ? Theme.of(context).textTheme.headline5
                 : Theme.of(context)
-                    .textTheme
-                    .headlineMedium
-                    ?.copyWith(color: Colors.black),
+                .textTheme
+                .headline4
+                ?.copyWith(color: Colors.black),
           ),
         )
       ],
@@ -89,21 +90,13 @@ class __FormContentState extends State<_FormContent> {
       constraints: const BoxConstraints(maxWidth: 300),
       child: Form(
         key: _formKey,
-        child: ListView(
-          /*mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,*/
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Username',
-                hintText: 'Enter your username',
-                prefixIcon: Icon(Icons.person_outline),
-                border: OutlineInputBorder(),
-              ),
-            ),
-            _gap(),
-            TextFormField(
               controller: emailController,
+              textInputAction: TextInputAction.next,
               validator: (value) {
                 // add email validation
                 if (value == null || value.isEmpty) {
@@ -111,7 +104,7 @@ class __FormContentState extends State<_FormContent> {
                 }
 
                 bool emailValid = RegExp(
-                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                     .hasMatch(value);
                 if (!emailValid) {
                   return 'Please enter a valid email';
@@ -128,7 +121,34 @@ class __FormContentState extends State<_FormContent> {
             ),
             _gap(),
             TextFormField(
+              controller: emailController,
+              textInputAction: TextInputAction.next,
+              validator: (value) {
+                // add email validation
+                if (value == null || value.isEmpty) {
+                  return 'Please enter some text';
+                }
+
+                bool emailValid = RegExp(
+                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                    .hasMatch(value);
+                if (!emailValid) {
+                  return 'Please enter a valid username';
+                }
+
+                return null;
+              },
+              decoration: const InputDecoration(
+                labelText: 'Username',
+                hintText: 'Enter your username',
+                prefixIcon: Icon(Icons.email_outlined),
+                border: OutlineInputBorder(),
+              ),
+            ),
+            _gap(),
+            TextFormField(
               controller: passwordController,
+              textInputAction: TextInputAction.done,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter some text';
@@ -137,12 +157,6 @@ class __FormContentState extends State<_FormContent> {
                 if (value.length < 6) {
                   return 'Password must be at least 6 characters';
                 }
-
-                // Kiểm tra confirm password có trùng với password không
-                if (_formKey.currentState?.validate() ?? false) {
-                  return 'Password and confirm password must match';
-                }
-
                 return null;
               },
               obscureText: !_isPasswordVisible,
@@ -164,25 +178,36 @@ class __FormContentState extends State<_FormContent> {
             ),
             _gap(),
             TextFormField(
+              controller: passwordController,
+              textInputAction: TextInputAction.done,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter some text';
                 }
 
-                // Kiểm tra confirm password có trùng với password không
-                if (_formKey.currentState?.validate() ?? false) {
-                  return 'Password and confirm password must match';
+                if (value.length < 6) {
+                  return 'Password confirm must be at least 6 characters';
                 }
-
                 return null;
               },
-              decoration: const InputDecoration(
-                labelText: 'Confirm Password',
-                hintText: 'Enter your password again',
-                prefixIcon: Icon(Icons.lock_outline_rounded),
-                border: OutlineInputBorder(),
-              ),
+              obscureText: !_isPasswordVisible,
+              decoration: InputDecoration(
+                  labelText: 'Password confirm',
+                  hintText: 'Enter your password confirm',
+                  prefixIcon: const Icon(Icons.lock_outline_rounded),
+                  border: const OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    icon: Icon(_isPasswordVisible
+                        ? Icons.visibility_off
+                        : Icons.visibility),
+                    onPressed: () {
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
+                    },
+                  )),
             ),
+            _gap(),
             CheckboxListTile(
               value: _rememberMe,
               onChanged: (value) {
@@ -191,7 +216,7 @@ class __FormContentState extends State<_FormContent> {
                   _rememberMe = value;
                 });
               },
-              title: const Text('I agree to the terms and policies'),
+              title: const Text('Remember me'),
               controlAffinity: ListTileControlAffinity.leading,
               dense: true,
               contentPadding: const EdgeInsets.all(0),
@@ -212,22 +237,27 @@ class __FormContentState extends State<_FormContent> {
                   ),
                 ),
                 onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    /// do something
-                  }
+                  // if (_formKey.currentState?.validate() ?? false) {
+                  //   /// do something
+                  // }
                   // Dùng để test, bấm chạy vào màn hình chính
-                  Navigator.pushNamed(context, '/home-page');
+                  emailController.text = 'user@gmail.com';
+                  passwordController.text = '123456';
+                  signUp();
                 },
               ),
             ),
-            SizedBox(
-              width: double.infinity,
+            SizedBox(width: double.infinity,
               child: TextButton(
                 onPressed: () {
-                  signUp();
-                  Navigator.pushNamed(context, '/login-page');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RegisterScreen(),
+                    ),
+                  );
                 },
-                child: const Text('Already have an account? Sign in'),
+                child: const Text('Already account? login'),
               ),
             ),
           ],
@@ -244,7 +274,7 @@ class __FormContentState extends State<_FormContent> {
           password: passwordController.text.trim()
       );
     } on FirebaseAuthException catch (e) {
-      print(e);
+      //print(e);
 
     }
   }
