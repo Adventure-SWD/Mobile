@@ -95,8 +95,16 @@ class __FormContentState extends State<_FormContent> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Username',
+                hintText: 'Enter your username',
+                prefixIcon: Icon(Icons.person_outline),
+                border: OutlineInputBorder(),
+              ),
+            ),
+            _gap(),
+            TextFormField(
               controller: emailController,
-              textInputAction: TextInputAction.next,
               validator: (value) {
                 // add email validation
                 if (value == null || value.isEmpty) {
@@ -121,34 +129,7 @@ class __FormContentState extends State<_FormContent> {
             ),
             _gap(),
             TextFormField(
-              controller: emailController,
-              textInputAction: TextInputAction.next,
-              validator: (value) {
-                // add email validation
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
-
-                bool emailValid = RegExp(
-                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                    .hasMatch(value);
-                if (!emailValid) {
-                  return 'Please enter a valid username';
-                }
-
-                return null;
-              },
-              decoration: const InputDecoration(
-                labelText: 'Username',
-                hintText: 'Enter your username',
-                prefixIcon: Icon(Icons.email_outlined),
-                border: OutlineInputBorder(),
-              ),
-            ),
-            _gap(),
-            TextFormField(
               controller: passwordController,
-              textInputAction: TextInputAction.done,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter some text';
@@ -157,6 +138,12 @@ class __FormContentState extends State<_FormContent> {
                 if (value.length < 6) {
                   return 'Password must be at least 6 characters';
                 }
+
+                // Kiểm tra confirm password có trùng với password không
+                if (_formKey.currentState?.validate() ?? false) {
+                  return 'Password and confirm password must match';
+                }
+
                 return null;
               },
               obscureText: !_isPasswordVisible,
@@ -178,22 +165,26 @@ class __FormContentState extends State<_FormContent> {
             ),
             _gap(),
             TextFormField(
-              controller: passwordController,
-              textInputAction: TextInputAction.done,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter some text';
                 }
 
                 if (value.length < 6) {
-                  return 'Password confirm must be at least 6 characters';
+                  return 'Confirm password must be at least 6 characters';
                 }
+
+                // Kiểm tra confirm password có trùng với password không
+                if (_formKey.currentState?.validate() ?? false) {
+                  return 'Password and confirm password must match';
+                }
+
                 return null;
               },
               obscureText: !_isPasswordVisible,
               decoration: InputDecoration(
-                  labelText: 'Password confirm',
-                  hintText: 'Enter your password confirm',
+                  labelText: 'Confirm password',
+                  hintText: 'Enter your confirm password',
                   prefixIcon: const Icon(Icons.lock_outline_rounded),
                   border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
@@ -232,17 +223,11 @@ class __FormContentState extends State<_FormContent> {
                 child: const Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
-                    'Sign in',
+                    'Sign up',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
                 onPressed: () {
-                  // if (_formKey.currentState?.validate() ?? false) {
-                  //   /// do something
-                  // }
-                  // Dùng để test, bấm chạy vào màn hình chính
-                  emailController.text = 'user@gmail.com';
-                  passwordController.text = '123456';
                   signUp();
                 },
               ),
@@ -253,7 +238,7 @@ class __FormContentState extends State<_FormContent> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const RegisterScreen(),
+                      builder: (context) => const LoginScreen(),
                     ),
                   );
                 },
