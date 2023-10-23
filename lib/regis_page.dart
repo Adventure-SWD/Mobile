@@ -170,10 +170,6 @@ class __FormContentState extends State<_FormContent> {
                   return 'Please enter some text';
                 }
 
-                if (value.length < 6) {
-                  return 'Confirm password must be at least 6 characters';
-                }
-
                 // Kiểm tra confirm password có trùng với password không
                 if (_formKey.currentState?.validate() ?? false) {
                   return 'Password and confirm password must match';
@@ -181,24 +177,13 @@ class __FormContentState extends State<_FormContent> {
 
                 return null;
               },
-              obscureText: !_isPasswordVisible,
-              decoration: InputDecoration(
-                  labelText: 'Confirm password',
-                  hintText: 'Enter your confirm password',
-                  prefixIcon: const Icon(Icons.lock_outline_rounded),
-                  border: const OutlineInputBorder(),
-                  suffixIcon: IconButton(
-                    icon: Icon(_isPasswordVisible
-                        ? Icons.visibility_off
-                        : Icons.visibility),
-                    onPressed: () {
-                      setState(() {
-                        _isPasswordVisible = !_isPasswordVisible;
-                      });
-                    },
-                  )),
+              decoration: const InputDecoration(
+                labelText: 'Confirm Password',
+                hintText: 'Enter your password again',
+                prefixIcon: Icon(Icons.lock_outline_rounded),
+                border: OutlineInputBorder(),
+              ),
             ),
-            _gap(),
             CheckboxListTile(
               value: _rememberMe,
               onChanged: (value) {
@@ -207,7 +192,7 @@ class __FormContentState extends State<_FormContent> {
                   _rememberMe = value;
                 });
               },
-              title: const Text('Remember me'),
+              title: const Text('I agree to the terms and policies'),
               controlAffinity: ListTileControlAffinity.leading,
               dense: true,
               contentPadding: const EdgeInsets.all(0),
@@ -223,26 +208,27 @@ class __FormContentState extends State<_FormContent> {
                 child: const Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
-                    'Sign up',
+                    'Sign in',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
                 onPressed: () {
-                  signUp();
+                  if (_formKey.currentState?.validate() ?? false) {
+                    /// do something
+                  }
+                  // Dùng để test, bấm chạy vào màn hình chính
+                  Navigator.pushNamed(context, '/home-page');
                 },
               ),
             ),
-            SizedBox(width: double.infinity,
+            SizedBox(
+              width: double.infinity,
               child: TextButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoginScreen(),
-                    ),
-                  );
+                  signUp();
+                  Navigator.pushNamed(context, '/login-page');
                 },
-                child: const Text('Already account? login'),
+                child: const Text('Already have an account? Sign in'),
               ),
             ),
           ],
@@ -258,9 +244,9 @@ class __FormContentState extends State<_FormContent> {
           email: emailController.text.trim(),
           password: passwordController.text.trim()
       );
+      Navigator.pushNamed(context, '/home-page');
     } on FirebaseAuthException catch (e) {
       //print(e);
-
     }
   }
 }
