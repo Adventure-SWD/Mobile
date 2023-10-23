@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:metrofood/app_bar.dart';
 import 'package:http/http.dart' as http;
+import 'package:metrofood/product_detail.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home-page';
@@ -119,38 +120,49 @@ class _HomePageState extends State<HomePage> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    width: 150,
-                    height: 150,
-                    decoration: const BoxDecoration(color: Color(0xFFD9D9D9)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage("https://via.placeholder.com/100x100"),
-                              fit: BoxFit.fill,
+                  InkWell(
+                    onTap: () {
+                      // Navigate to the settings page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProductDetailPage(heroTag: 1),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      width: 150,
+                      height: 150,
+                      decoration: const BoxDecoration(color: Color(0xFFD9D9D9)),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 100,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage("https://via.placeholder.com/100x100"),
+                                fit: BoxFit.fill,
+                              ),
                             ),
                           ),
-                        ),
-                        const Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Text(
-                            '75.000 VND',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w600,
-                              height: 0,
+                          const Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Text(
+                              '75.000 VND',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w600,
+                                height: 0,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10,),
@@ -174,154 +186,49 @@ class _HomePageState extends State<HomePage> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    width: 150,
-                    height: 150,
-                    decoration: const BoxDecoration(color: Color(0xFFD9D9D9)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage("https://via.placeholder.com/100x100"),
-                              fit: BoxFit.fill,
+                  InkWell(
+                    onTap: () {
+                      // Navigate to the settings page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProductDetailPage(heroTag: 2),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      width: 150,
+                      height: 150,
+                      decoration: const BoxDecoration(color: Color(0xFFD9D9D9)),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 100,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage("https://via.placeholder.com/100x100"),
+                                fit: BoxFit.fill,
+                              ),
                             ),
                           ),
-                        ),
-                        const Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Text(
-                            '75.000 VND',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w600,
-                              height: 0,
+                          const Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Text(
+                              '75.000 VND',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w600,
+                                height: 0,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10,),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Hamburger',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w300,
-                          height: 0,
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 10,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    width: 150,
-                    height: 150,
-                    decoration: const BoxDecoration(color: Color(0xFFD9D9D9)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage("https://via.placeholder.com/100x100"),
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                        ),
-                        const Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Text(
-                            '75.000 VND',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w600,
-                              height: 0,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10,),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Hamburger',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w300,
-                          height: 0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    width: 150,
-                    height: 150,
-                    decoration: const BoxDecoration(color: Color(0xFFD9D9D9)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage("https://via.placeholder.com/100x100"),
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                        ),
-                        const Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Text(
-                            '75.000 VND',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w600,
-                              height: 0,
-                            ),
-                          ),
-                        ),
-                      ],
                     ),
                   ),
                   const SizedBox(height: 10,),
@@ -351,38 +258,49 @@ class _HomePageState extends State<HomePage> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    width: 150,
-                    height: 150,
-                    decoration: const BoxDecoration(color: Color(0xFFD9D9D9)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage("https://via.placeholder.com/100x100"),
-                              fit: BoxFit.fill,
+                  InkWell(
+                    onTap: () {
+                      // Navigate to the settings page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProductDetailPage(heroTag: 3),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      width: 150,
+                      height: 150,
+                      decoration: const BoxDecoration(color: Color(0xFFD9D9D9)),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 100,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage("https://via.placeholder.com/100x100"),
+                                fit: BoxFit.fill,
+                              ),
                             ),
                           ),
-                        ),
-                        const Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Text(
-                            '75.000 VND',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w600,
-                              height: 0,
+                          const Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Text(
+                              '75.000 VND',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w600,
+                                height: 0,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10,),
@@ -406,38 +324,187 @@ class _HomePageState extends State<HomePage> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    width: 150,
-                    height: 150,
-                    decoration: const BoxDecoration(color: Color(0xFFD9D9D9)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage("https://via.placeholder.com/100x100"),
-                              fit: BoxFit.fill,
+                  InkWell(
+                    onTap: () {
+                      // Navigate to the settings page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProductDetailPage(heroTag: 4),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      width: 150,
+                      height: 150,
+                      decoration: const BoxDecoration(color: Color(0xFFD9D9D9)),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 100,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage("https://via.placeholder.com/100x100"),
+                                fit: BoxFit.fill,
+                              ),
                             ),
                           ),
-                        ),
-                        const Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Text(
-                            '75.000 VND',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w600,
-                              height: 0,
+                          const Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Text(
+                              '75.000 VND',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w600,
+                                height: 0,
+                              ),
                             ),
                           ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10,),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Hamburger',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w300,
+                          height: 0,
                         ),
-                      ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 10,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      // Navigate to the settings page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProductDetailPage(heroTag: 5),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      width: 150,
+                      height: 150,
+                      decoration: const BoxDecoration(color: Color(0xFFD9D9D9)),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 100,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage("https://via.placeholder.com/100x100"),
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ),
+                          const Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Text(
+                              '75.000 VND',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w600,
+                                height: 0,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10,),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Hamburger',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w300,
+                          height: 0,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      // Navigate to the settings page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProductDetailPage(heroTag: 0),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      width: 150,
+                      height: 150,
+                      decoration: const BoxDecoration(color: Color(0xFFD9D9D9)),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 100,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage("https://via.placeholder.com/100x100"),
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ),
+                          const Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Text(
+                              '75.000 VND',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w600,
+                                height: 0,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10,),
