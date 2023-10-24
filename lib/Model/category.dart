@@ -1,16 +1,29 @@
-class Categories {
-  final String id;
-  final String categoryName;
+// To parse this JSON data, do
+//
+//     final categories = categoriesFromJson(jsonString);
 
-  const Categories({
+import 'dart:convert';
+
+Categories categoriesFromJson(String str) => Categories.fromJson(json.decode(str));
+
+String categoriesToJson(Categories data) => json.encode(data.toJson());
+
+class Categories {
+  String id;
+  String categoryName;
+
+  Categories({
     required this.id,
     required this.categoryName,
   });
 
-  factory Categories.fromJson(Map<String, dynamic> json) {
-    return Categories(
-      id: json['id'],
-      categoryName: json['categoryName'],
-    );
-  }
+  factory Categories.fromJson(Map<String, dynamic> json) => Categories(
+    id: json["id"],
+    categoryName: json["categoryName"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "categoryName": categoryName,
+  };
 }
