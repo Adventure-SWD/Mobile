@@ -17,7 +17,7 @@ import './home_page.dart';
 import './login_page.dart';
 import './regis_page.dart';
 import './transaction_page.dart';
-import './CategoriesPage.dart';
+import './categories_page.dart';
 
 Future<void> main() async {
   await WidgetsFlutterBinding.ensureInitialized();

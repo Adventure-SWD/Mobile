@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:metrofood/Model/album.dart';
 import 'package:metrofood/Model/category.dart';
+import 'package:metrofood/Model/products.dart';
 import 'package:metrofood/Model/route.dart';
 import 'package:metrofood/Model/station.dart';
 
@@ -54,6 +55,17 @@ class BaseClient {
     if (response.statusCode == 200) {
       final List result = json.decode(response.body);
       return result.map((e) => Categories.fromJson(e)).toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+  Future<List<Products>> fetchProduct() async {
+    final response = await http
+        .get(Uri.parse('http://13.210.56.232/api/v1/product/get-all'));
+
+    if (response.statusCode == 200) {
+      final List result = json.decode(response.body);
+      return result.map((e) => Products.fromJson(e)).toList();
     } else {
       throw Exception('Failed to load data');
     }
