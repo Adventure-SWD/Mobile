@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:metrofood/Model/category.dart';
 import 'package:metrofood/app_bar.dart';
+import 'package:metrofood/baseclient.dart';
 
 class CategoriesPage extends StatefulWidget{
   static const routeName = '/categories-page';
@@ -9,8 +11,30 @@ class CategoriesPage extends StatefulWidget{
   State<CategoriesPage> createState() => _CategoriesPageState();
 }
 class _CategoriesPageState extends State<CategoriesPage> {
+  late Future<List<Categories>> futureCategory;
+  List<String> listCategory = [];
+
+  @override
+  void initState() {
+    initializeData();
+    super.initState();
+  }
+
+  Future<void> initializeData() async {
+    futureCategory = BaseClient().fetchCategory();
+    futureCategory.then((value) {
+      setState(() {
+        listCategory = value.map((e) => e.categoryName).toList();
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (listCategory == null || listCategory.isEmpty) {
+      return Center(
+      );
+    }
     return Scaffold(
       appBar: const CustomAppBar(),
       body: ListView(
@@ -102,326 +126,59 @@ class _CategoriesPageState extends State<CategoriesPage> {
             ),
           ),
           const SizedBox(height: 40),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(16),
-                width: 150,
-                height: 150,
-                decoration: ShapeDecoration(
-                  color: const Color(0xFFD9D9D9),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+          SingleChildScrollView(
+            child: Container (
+            child: GridView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, // Số cột
+                crossAxisSpacing: 16, // Khoảng cách ngang giữa các cột
+                mainAxisSpacing: 16, // Khoảng cách dọc giữa các hàng
+              ),
+              itemCount: listCategory.length, // Số lượng phần tử trong danh sách
+              itemBuilder: (context, index) {
+                return Container(
+                  padding: const EdgeInsets.all(16),
+                  width: 150,
+                  height: 150,
+                  decoration: ShapeDecoration(
+                    color: const Color(0xFFD9D9D9),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                        width: 80,
-                        height: 80,
-                        decoration: const ShapeDecoration(
-                          color: Colors.black,
-                          shape: OvalBorder(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Container(
+                          width: 80,
+                          height: 80,
+                          decoration: const ShapeDecoration(
+                            color: Colors.black,
+                            shape: OvalBorder(),
+                          ),
                         ),
                       ),
-                    ),
-                    const Text(
-                      'Category name',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w700,
-                        height: 0,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(16),
-                width: 150,
-                height: 150,
-                decoration: ShapeDecoration(
-                  color: const Color(0xFFD9D9D9),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                        width: 80,
-                        height: 80,
-                        decoration: const ShapeDecoration(
+                      Text(
+                        listCategory[index], // Sử dụng dữ liệu từ danh sách
+                        style: TextStyle(
                           color: Colors.black,
-                          shape: OvalBorder(),
+                          fontSize: 14,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w700,
+                          height: 0,
                         ),
-                      ),
-                    ),
-                    const Text(
-                      'Category name',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w700,
-                        height: 0,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(16),
-                width: 150,
-                height: 150,
-                decoration: ShapeDecoration(
-                  color: const Color(0xFFD9D9D9),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                        width: 80,
-                        height: 80,
-                        decoration: const ShapeDecoration(
-                          color: Colors.black,
-                          shape: OvalBorder(),
-                        ),
-                      ),
-                    ),
-                    const Text(
-                      'Category name',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w700,
-                        height: 0,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(16),
-                width: 150,
-                height: 150,
-                decoration: ShapeDecoration(
-                  color: const Color(0xFFD9D9D9),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                        width: 80,
-                        height: 80,
-                        decoration: const ShapeDecoration(
-                          color: Colors.black,
-                          shape: OvalBorder(),
-                        ),
-                      ),
-                    ),
-                    const Text(
-                      'Category name',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w700,
-                        height: 0,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
           ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(16),
-                width: 150,
-                height: 150,
-                decoration: ShapeDecoration(
-                  color: const Color(0xFFD9D9D9),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                        width: 80,
-                        height: 80,
-                        decoration: const ShapeDecoration(
-                          color: Colors.black,
-                          shape: OvalBorder(),
-                        ),
-                      ),
-                    ),
-                    const Text(
-                      'Category name',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w700,
-                        height: 0,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(16),
-                width: 150,
-                height: 150,
-                decoration: ShapeDecoration(
-                  color: const Color(0xFFD9D9D9),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                        width: 80,
-                        height: 80,
-                        decoration: const ShapeDecoration(
-                          color: Colors.black,
-                          shape: OvalBorder(),
-                        ),
-                      ),
-                    ),
-                    const Text(
-                      'Category name',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w700,
-                        height: 0,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(16),
-                width: 150,
-                height: 150,
-                decoration: ShapeDecoration(
-                  color: const Color(0xFFD9D9D9),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                        width: 80,
-                        height: 80,
-                        decoration: const ShapeDecoration(
-                          color: Colors.black,
-                          shape: OvalBorder(),
-                        ),
-                      ),
-                    ),
-                    const Text(
-                      'Category name',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w700,
-                        height: 0,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(16),
-                width: 150,
-                height: 150,
-                decoration: ShapeDecoration(
-                  color: const Color(0xFFD9D9D9),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                        width: 80,
-                        height: 80,
-                        decoration: const ShapeDecoration(
-                          color: Colors.black,
-                          shape: OvalBorder(),
-                        ),
-                      ),
-                    ),
-                    const Text(
-                      'Category name',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w700,
-                        height: 0,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
         ],
       ),
     );

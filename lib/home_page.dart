@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:metrofood/app_bar.dart';
-import 'package:http/http.dart' as http;
-import 'package:metrofood/product_detail.dart';
+import 'dart:async';
+
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home-page';
@@ -12,6 +11,36 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final List<String> imageUrls = [
+    'images/banner1.png',
+    'images/banner2.png',
+    'images/banner3.png'
+  ];
+  int currentImageIndex = 0;
+
+
+  @override
+  void initState() {
+    startImageSlider();
+    super.initState();
+  }
+
+  void startImageSlider() {
+    const duration = Duration(seconds: 2);
+
+    Timer.periodic(duration, (Timer timer) {
+      if (currentImageIndex < imageUrls.length - 1) {
+        currentImageIndex++;
+      } else {
+        currentImageIndex = 0;
+      }
+
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,12 +66,19 @@ class _HomePageState extends State<HomePage> {
                 )
               ],
             ),
+            child: ClipRRect (
+              borderRadius: BorderRadius.circular(10),
+              child: Image.asset(
+                imageUrls[currentImageIndex],
+                fit: BoxFit.cover,
+              ),
+            )
           ),
           const SizedBox(height: 30,),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+              const Text(
                 'Categories',
                 style: TextStyle(
                   color: Colors.black,
@@ -52,14 +88,19 @@ class _HomePageState extends State<HomePage> {
                   height: 0,
                 ),
               ),
-              Text(
-                'See all',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 15,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w300,
-                  height: 0,
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, '/categories-page');
+                },
+                child: const Text(
+                  'See all',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w300,
+                    height: 0,
+                  ),
                 ),
               )
             ],

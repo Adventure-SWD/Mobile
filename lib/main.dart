@@ -144,7 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       bottomNavigationBar: BottomNavigationBar(
         // định dạng Footer
-        fixedColor: Colors.black,
+        fixedColor: Color(0xFFFF8552),
         type: BottomNavigationBarType.fixed,
 
         currentIndex: _currentIndex,

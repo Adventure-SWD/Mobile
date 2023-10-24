@@ -47,18 +47,15 @@ class BaseClient {
       throw Exception('Failed to load data');
     }
   }
-  Future<Categories> fetchCategory() async {
+  Future<List<Categories>> fetchCategory() async {
     final response = await http
-        .get(Uri.parse('http://13.210.56.232/api/v1/category/get-by-id?Id=8908ea98-b421-420b-9634-03ed356bb921'));
+        .get(Uri.parse('http://13.210.56.232/api/v1/category/get-all'));
 
     if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      return Categories.fromJson(jsonDecode(response.body));
+      final List result = json.decode(response.body);
+      return result.map((e) => Categories.fromJson(e)).toList();
     } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load category');
+      throw Exception('Failed to load data');
     }
   }
   Future<Album> fetchAlbum() async {
