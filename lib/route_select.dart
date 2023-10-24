@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:metrofood/Model/album.dart';
-import 'package:metrofood/Model/category.dart';
 import 'package:metrofood/Model/route.dart';
 import 'package:metrofood/Model/station.dart';
 import 'package:metrofood/baseclient.dart';
@@ -15,7 +14,6 @@ class RouteSelectPage extends StatefulWidget {
 
 class _RouteSelectPage extends State<RouteSelectPage> {
   late Future<Album> futureAlbum;
-  late Future<Categories> futureCategory;
   late Future<List<Routes>> futureRoute;
   late Future<List<Station>> futureStation;
 
@@ -38,7 +36,6 @@ class _RouteSelectPage extends State<RouteSelectPage> {
   Future<void> initializeData() async {
     try {
       futureAlbum = BaseClient().fetchAlbum();
-      futureCategory = BaseClient().fetchCategory();
       futureRoute = BaseClient().fetchRoute();
       futureStation = BaseClient().fetchStation();
       await futureRoute.then((routes) {

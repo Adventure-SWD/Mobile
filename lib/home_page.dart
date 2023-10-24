@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:metrofood/app_bar.dart';
-import 'package:http/http.dart' as http;
+import 'package:metrofood/Model/products.dart';
+import 'package:metrofood/baseclient.dart';
+import 'dart:async';
+
 import 'package:metrofood/product_detail.dart';
+
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home-page';
@@ -12,6 +15,48 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late Future<List<Products>> futureProduct;
+  late List<Products> listProduct;
+  final List<String> imageUrls = [
+    'images/banner1.png',
+    'images/banner2.png',
+    'images/banner3.png'
+  ];
+  int currentImageIndex = 0;
+
+
+  @override
+  void initState() {
+    initializeData();
+    startImageSlider();
+    super.initState();
+  }
+
+  Future<void> initializeData() async {
+    futureProduct = BaseClient().fetchProduct();
+    await futureProduct.then((value) {
+      setState(() {
+        listProduct = value.toList();
+      });
+    });
+  }
+
+  void startImageSlider() {
+    const duration = Duration(seconds: 2);
+
+    Timer.periodic(duration, (Timer timer) {
+      if (currentImageIndex < imageUrls.length - 1) {
+        currentImageIndex++;
+      } else {
+        currentImageIndex = 0;
+      }
+
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +68,7 @@ class _HomePageState extends State<HomePage> {
             width: 288,
             height: 127,
             decoration: ShapeDecoration(
-              color: const Color(0xFFD9D9D9),
+              color: const Color(0xFFFF8552),
               shape: RoundedRectangleBorder(
                 side: const BorderSide(width: 1),
                 borderRadius: BorderRadius.circular(10),
@@ -37,12 +82,19 @@ class _HomePageState extends State<HomePage> {
                 )
               ],
             ),
+            child: ClipRRect (
+              borderRadius: BorderRadius.circular(10),
+              child: Image.asset(
+                imageUrls[currentImageIndex],
+                fit: BoxFit.cover,
+              ),
+            )
           ),
           const SizedBox(height: 30,),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+              const Text(
                 'Categories',
                 style: TextStyle(
                   color: Colors.black,
@@ -52,14 +104,19 @@ class _HomePageState extends State<HomePage> {
                   height: 0,
                 ),
               ),
-              Text(
-                'See all',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 15,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w300,
-                  height: 0,
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, '/categories-page');
+                },
+                child: const Text(
+                  'See all',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w300,
+                    height: 0,
+                  ),
                 ),
               )
             ],
@@ -72,32 +129,64 @@ class _HomePageState extends State<HomePage> {
                 width: 60,
                 height: 60,
                 decoration: const ShapeDecoration(
-                  color: Color(0xFFD9D9D9),
+                  color: Color(0xFFFF8552),
                   shape: OvalBorder(),
+                ),
+                child: Align(
+                    alignment: Alignment.center,
+                    child: Icon(
+                      Icons.lunch_dining,
+                      color: Colors.white,
+                      size: 30,
+                    ),
                 ),
               ),
               Container(
                 width: 60,
                 height: 60,
                 decoration: const ShapeDecoration(
-                  color: Color(0xFFD9D9D9),
+                  color: Color(0xFFFF8552),
                   shape: OvalBorder(),
+                ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Icon(
+                    Icons.icecream,
+                    color: Colors.white,
+                    size: 30,
+                  ),
                 ),
               ),
               Container(
                 width: 60,
                 height: 60,
                 decoration: const ShapeDecoration(
-                  color: Color(0xFFD9D9D9),
+                  color: Color(0xFFFF8552),
                   shape: OvalBorder(),
+                ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Icon(
+                    Icons.fastfood,
+                    color: Colors.white,
+                    size: 30,
+                  ),
                 ),
               ),
               Container(
                 width: 60,
                 height: 60,
                 decoration: const ShapeDecoration(
-                  color: Color(0xFFD9D9D9),
+                  color: Color(0xFFFF8552),
                   shape: OvalBorder(),
+                ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Icon(
+                    Icons.liquor,
+                    color: Colors.white,
+                    size: 30,
+                  ),
                 ),
               )
             ],
@@ -134,7 +223,7 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.all(5),
                       width: 150,
                       height: 150,
-                      decoration: const BoxDecoration(color: Color(0xFFD9D9D9)),
+                      decoration: const BoxDecoration(color: Color(0xFFFF8552)),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -143,17 +232,17 @@ class _HomePageState extends State<HomePage> {
                             height: 100,
                             decoration: const BoxDecoration(
                               image: DecorationImage(
-                                image: NetworkImage("https://via.placeholder.com/100x100"),
+                                image: NetworkImage("https://kenh14cdn.com/2018/1/25/14-15168854449721199424947.jpg"),
                                 fit: BoxFit.fill,
                               ),
                             ),
                           ),
-                          const Align(
+                          Align(
                             alignment: Alignment.bottomLeft,
                             child: Text(
-                              '75.000 VND',
+                              '${listProduct[0].price.toString()} VND',
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontSize: 12,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w600,
@@ -166,11 +255,11 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   const SizedBox(height: 10,),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Hamburger',
+                        listProduct[0].productName.toString(),
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 12,
@@ -200,7 +289,7 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.all(5),
                       width: 150,
                       height: 150,
-                      decoration: const BoxDecoration(color: Color(0xFFD9D9D9)),
+                      decoration: const BoxDecoration(color: Color(0xFFFF8552)),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -214,12 +303,12 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
-                          const Align(
+                          Align(
                             alignment: Alignment.bottomLeft,
                             child: Text(
-                              '75.000 VND',
+                              '${listProduct[1].price.toString()} VND',
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontSize: 12,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w600,
@@ -232,11 +321,11 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   const SizedBox(height: 10,),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Hamburger',
+                        listProduct[1].productName.toString(),
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 12,
@@ -272,7 +361,7 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.all(5),
                       width: 150,
                       height: 150,
-                      decoration: const BoxDecoration(color: Color(0xFFD9D9D9)),
+                      decoration: const BoxDecoration(color: Color(0xFFFF8552)),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -286,12 +375,12 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
-                          const Align(
+                          Align(
                             alignment: Alignment.bottomLeft,
                             child: Text(
-                              '75.000 VND',
+                              '${listProduct[2].price.toString()} VND',
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontSize: 12,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w600,
@@ -304,11 +393,11 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   const SizedBox(height: 10,),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Hamburger',
+                        listProduct[2].productName.toString(),
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 12,
@@ -338,7 +427,7 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.all(5),
                       width: 150,
                       height: 150,
-                      decoration: const BoxDecoration(color: Color(0xFFD9D9D9)),
+                      decoration: const BoxDecoration(color: Color(0xFFFF8552)),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -352,12 +441,12 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
-                          const Align(
+                          Align(
                             alignment: Alignment.bottomLeft,
                             child: Text(
-                              '75.000 VND',
+                              '${listProduct[3].price.toString()} VND',
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontSize: 12,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w600,
@@ -370,11 +459,11 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   const SizedBox(height: 10,),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Hamburger',
+                        listProduct[3].productName.toString(),
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 12,
@@ -410,7 +499,7 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.all(5),
                       width: 150,
                       height: 150,
-                      decoration: const BoxDecoration(color: Color(0xFFD9D9D9)),
+                      decoration: const BoxDecoration(color: Color(0xFFFF8552)),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -424,12 +513,12 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
-                          const Align(
+                           Align(
                             alignment: Alignment.bottomLeft,
                             child: Text(
-                              '75.000 VND',
+                              '${listProduct[4].price.toString()} VND',
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontSize: 12,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w600,
@@ -442,11 +531,11 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   const SizedBox(height: 10,),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Hamburger',
+                        listProduct[4].productName.toString(),
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 12,
@@ -476,7 +565,7 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.all(5),
                       width: 150,
                       height: 150,
-                      decoration: const BoxDecoration(color: Color(0xFFD9D9D9)),
+                      decoration: const BoxDecoration(color: Color(0xFFFF8552)),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -490,12 +579,12 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
-                          const Align(
+                           Align(
                             alignment: Alignment.bottomLeft,
                             child: Text(
-                              '75.000 VND',
+                              '${listProduct[5].price.toString()} VND',
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontSize: 12,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w600,
@@ -508,11 +597,11 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   const SizedBox(height: 10,),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Hamburger',
+                        listProduct[5].productName.toString(),
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 12,
