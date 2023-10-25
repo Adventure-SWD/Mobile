@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Future<List<Products>> futureProduct;
-  late List<Products> listProduct;
+  late List<Products> listProduct = [];
   final List<String> imageUrls = [
     'images/banner1.png',
     'images/banner2.png',
@@ -59,6 +59,20 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    if(listProduct == null || listProduct.isEmpty) {
+      return Scaffold(
+        body: Stack(
+          children: [
+            Container(
+              color: Color(0xFFFAFAFA), // Màu nền xám
+            ),
+            Center(
+              child: CircularProgressIndicator(), // Màn hình loading (ví dụ: hiển thị một vòng tròn tiến trình)
+            ),
+          ],
+        ),
+      );
+    }
     return Scaffold(
       //appBar: CustomAppBar(),
       body: ListView(
@@ -215,7 +229,7 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ProductDetailPage(heroTag: 1),
+                          builder: (context) => ProductDetailPage(id: "${listProduct[0].id}"),
                         ),
                       );
                     },
@@ -230,9 +244,9 @@ class _HomePageState extends State<HomePage> {
                           Container(
                             width: 100,
                             height: 100,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: NetworkImage("https://kenh14cdn.com/2018/1/25/14-15168854449721199424947.jpg"),
+                                image: NetworkImage(listProduct[0].image),
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -281,7 +295,7 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ProductDetailPage(heroTag: 2),
+                          builder: (context) =>  ProductDetailPage(id: "${listProduct[1].id}"),
                         ),
                       );
                     },
@@ -296,9 +310,9 @@ class _HomePageState extends State<HomePage> {
                           Container(
                             width: 100,
                             height: 100,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: NetworkImage("https://via.placeholder.com/100x100"),
+                                image: NetworkImage(listProduct[1].image),
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -353,7 +367,7 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ProductDetailPage(heroTag: 3),
+                          builder: (context) => ProductDetailPage(id: "${listProduct[2].id}"),
                         ),
                       );
                     },
@@ -368,9 +382,9 @@ class _HomePageState extends State<HomePage> {
                           Container(
                             width: 100,
                             height: 100,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: NetworkImage("https://via.placeholder.com/100x100"),
+                                image: NetworkImage(listProduct[2].image),
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -419,7 +433,7 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ProductDetailPage(heroTag: 4),
+                          builder: (context) =>  ProductDetailPage(id: "${listProduct[3].id}"),
                         ),
                       );
                     },
@@ -434,9 +448,9 @@ class _HomePageState extends State<HomePage> {
                           Container(
                             width: 100,
                             height: 100,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: NetworkImage("https://via.placeholder.com/100x100"),
+                                image: NetworkImage(listProduct[3].image),
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -491,7 +505,7 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ProductDetailPage(heroTag: 5),
+                          builder: (context) =>  ProductDetailPage(id: "${listProduct[4].id}"),
                         ),
                       );
                     },
@@ -506,9 +520,9 @@ class _HomePageState extends State<HomePage> {
                           Container(
                             width: 100,
                             height: 100,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: NetworkImage("https://via.placeholder.com/100x100"),
+                                image: NetworkImage(listProduct[4].image),
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -557,7 +571,7 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ProductDetailPage(heroTag: 0),
+                          builder: (context) =>  ProductDetailPage(id: "${listProduct[5].id}"),
                         ),
                       );
                     },
@@ -572,9 +586,9 @@ class _HomePageState extends State<HomePage> {
                           Container(
                             width: 100,
                             height: 100,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: NetworkImage("https://via.placeholder.com/100x100"),
+                                image: NetworkImage(listProduct[5].image),
                                 fit: BoxFit.fill,
                               ),
                             ),

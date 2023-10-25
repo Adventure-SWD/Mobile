@@ -70,6 +70,20 @@ class BaseClient {
       throw Exception('Failed to load data');
     }
   }
+  Future<Products> fetchProductById(String id) async {
+    final response = await http
+        .get(Uri.parse('http://13.210.56.232/api/v1/product/get-by-id?Id=${id}'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      return Products.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load product');
+    }
+  }
   Future<Album> fetchAlbum() async {
     final response = await http
         .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
