@@ -1,7 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:metrofood/edit_profile.dart';
 import 'package:metrofood/login_page.dart';
 import 'package:metrofood/setting_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -17,6 +19,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    void _handleLogout() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.remove('userId');
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/login-page', ModalRoute.withName('/login-page'));
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -114,13 +122,7 @@ class _ProfilePageState extends State<ProfilePage> {
               icon: Icons.logout,
               title: 'Log out',
               onTap: () {
-                // Navigate to the settings page
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LoginScreen(),
-                  ),
-                );
+                _handleLogout();
               },
             ),
           ],
@@ -129,6 +131,8 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
+
+
 
 class CustomListTile extends StatelessWidget {
   final IconData icon;

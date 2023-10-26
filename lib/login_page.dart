@@ -1,10 +1,9 @@
-import 'dart:ffi';
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:metrofood/Model/user.dart';
+import 'package:metrofood/baseclient.dart';
 import 'package:metrofood/regis_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatelessWidget {
   static const routeName = '/login-page';
@@ -60,10 +59,10 @@ class _Logo extends StatelessWidget {
             "Welcome to Metro Food!",
             textAlign: TextAlign.center,
             style: isSmallScreen
-                ? Theme.of(context).textTheme.headline5
+                ? Theme.of(context).textTheme.headlineSmall
                 : Theme.of(context)
                     .textTheme
-                    .headline4
+                    .headlineMedium
                     ?.copyWith(color: Colors.black),
           ),
         )
@@ -80,6 +79,15 @@ class _FormContent extends StatefulWidget {
 }
 
 class __FormContentState extends State<_FormContent> {
+  late Future<Users> futureUser;
+  late Users user = new Users(
+      id: "",
+      userName: "",
+      email: "",
+      accessToken: "",
+      storeId: "",
+      refreshToken: "",
+      expires: DateTime.now());
   bool _isPasswordVisible = false;
   bool _rememberMe = false;
   TextEditingController emailController = TextEditingController();
@@ -91,6 +99,21 @@ class __FormContentState extends State<_FormContent> {
     passwordController.dispose();
     super.dispose();
   }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> LoginUser() async {
+    await futureUser.then((value) {
+      user = value;
+      if (user.id.isNotEmpty) {
+        _saveAndRedirectToHome();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -191,13 +214,16 @@ class __FormContentState extends State<_FormContent> {
                   //   /// do something
                   // }
                   // Dùng để test, bấm chạy vào màn hình chính
-                  emailController.text = 'user@gmail.com';
-                  passwordController.text = '123456';
-                  signIn();
+                  emailController.text = 'enduser@gmail.com';
+                  passwordController.text = 'P@ssw0rd1';
+                  futureUser = BaseClient().fetchLogin(
+                      emailController.text, passwordController.text);
+                  LoginUser();
                 },
               ),
             ),
-            SizedBox(width: double.infinity,
+            SizedBox(
+              width: double.infinity,
               child: TextButton(
                 onPressed: () {
                   Navigator.push(
@@ -217,15 +243,23 @@ class __FormContentState extends State<_FormContent> {
   }
 
   Widget _gap() => const SizedBox(height: 16);
-  Future signIn() async{
+  void _saveAndRedirectToHome() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("userId", user.id);
+    Navigator.pushNamedAndRemoveUntil(
+        context, '/main-page', ModalRoute.withName('/main-page'),
+        arguments: (user));
+  }
+
+  Future signIn() async {
     try {
-      UserCredential credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim()
-      );
+      UserCredential credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+              email: emailController.text.trim(),
+              password: passwordController.text.trim());
       print((credential.credential ?? null).toString());
       Navigator.pushNamed(context, '/home-page');
-    } on FirebaseAuthException catch(e) {
+    } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
       } else if (e.code == 'wrong-password') {
@@ -236,4 +270,3 @@ class __FormContentState extends State<_FormContent> {
     }
   }
 }
-
