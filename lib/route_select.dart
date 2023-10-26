@@ -16,10 +16,9 @@ class _RouteSelectPage extends State<RouteSelectPage> {
   late Future<Album> futureAlbum;
   late Future<List<Routes>> futureRoute;
   late Future<List<Station>> futureStation;
-  late List<Routes> listRoute;
-  late List<Station> listStation;
+  late List<Routes> listRoute = [];
+  late List<Station> listStation = [];
   String? _selectedRoute;
-
 
   String? _selectedTime;
   final List<String> _time = ['6:00 AM', '6:15 AM', '6:30 AM'];
@@ -42,14 +41,12 @@ class _RouteSelectPage extends State<RouteSelectPage> {
         setState(() {
           listRoute = value.toList();
         });
-      }).catchError((error) {
-      });
+      }).catchError((error) {});
       await futureStation.then((stations) {
         setState(() {
           listStation = stations.toList();
         });
-      }).catchError((error) {
-      });
+      }).catchError((error) {});
     } catch (error) {
       print(error);
     }
@@ -159,10 +156,17 @@ class _RouteSelectPage extends State<RouteSelectPage> {
               _selectedRoute = newValue;
             });
           },
+          isExpanded: true,
           hint: Text("Chọn tuyến đường", style: hintStyle),
           items: listRoute
-              .map((route) =>
-                  DropdownMenuItem<String>(value: route.id, child: Text('${route.fromLocation} đến ${route.toLocation}')))
+              .map((route) => DropdownMenuItem<String>(
+                  value: route.id,
+                  child: Text(
+                    '${route.fromLocation} đến ${route.toLocation}',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    // style: TextStyle(fontSize: 12),
+                  )))
               .toList());
 
   Widget _dropDownTime({
@@ -214,6 +218,7 @@ class _RouteSelectPage extends State<RouteSelectPage> {
           hint: Text("Chọn trạm tàu", style: hintStyle),
           items: listStation
               .map((station) => DropdownMenuItem<String>(
-                  value: station.stationData.id, child: Text(station.stationData.stationName)))
+                  value: station.stationData.id,
+                  child: Text(station.stationData.stationName)))
               .toList());
 }

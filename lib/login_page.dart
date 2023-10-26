@@ -246,6 +246,8 @@ class __FormContentState extends State<_FormContent> {
   void _saveAndRedirectToHome() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("userId", user.id);
+    await prefs.setString("userName", user.userName);
+    await prefs.setString("email", user.email);
     Navigator.pushNamedAndRemoveUntil(
         context, '/main-page', ModalRoute.withName('/main-page'),
         arguments: (user));
