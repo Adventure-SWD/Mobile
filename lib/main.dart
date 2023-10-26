@@ -2,6 +2,7 @@ import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:metrofood/api/firebase_api.dart';
 import 'package:metrofood/cart_page.dart';
 import 'package:metrofood/notification_page.dart';
 import 'package:metrofood/profile_page.dart';
@@ -45,6 +46,11 @@ Future<void> main() async {
   });
   // UserCredential userCredential = await FirebaseAuth.instance.signInAnonymously();
   // FirebaseMessaging.onBackgroundMessage((message) => _firebaseMessagingBackgroundHandler(message));
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await FirebaseApi().initNotification();
+
   runApp(const MyApp());
 }
 
