@@ -16,10 +16,9 @@ class _RouteSelectPage extends State<RouteSelectPage> {
   late Future<Album> futureAlbum;
   late Future<List<Routes>> futureRoute;
   late Future<List<Station>> futureStation;
-
-  List<String> listRoute = [];
+  late List<Routes> listRoute = [];
+  late List<Station> listStation = [];
   String? _selectedRoute;
-
 
   String? _selectedTime;
   final List<String> _time = ['6:00 AM', '6:15 AM', '6:30 AM'];
@@ -38,18 +37,16 @@ class _RouteSelectPage extends State<RouteSelectPage> {
       futureAlbum = BaseClient().fetchAlbum();
       futureRoute = BaseClient().fetchRoute();
       futureStation = BaseClient().fetchStation();
-      await futureRoute.then((routes) {
+      await futureRoute.then((value) {
         setState(() {
-          listRoute = routes.map((route) => '${route.fromLocation} đến ${route.toLocation}').toList();
+          listRoute = value.toList();
         });
-      }).catchError((error) {
-      });
+      }).catchError((error) {});
       await futureStation.then((stations) {
         setState(() {
-          _station = stations.map((e) => e.stationData.stationName).toList();
+          listStation = stations.toList();
         });
-      }).catchError((error) {
-      });
+      }).catchError((error) {});
     } catch (error) {
       print(error);
     }
@@ -159,10 +156,17 @@ class _RouteSelectPage extends State<RouteSelectPage> {
               _selectedRoute = newValue;
             });
           },
+          isExpanded: true,
           hint: Text("Chọn tuyến đường", style: hintStyle),
           items: listRoute
-              .map((route) =>
-                  DropdownMenuItem<String>(value: route, child: Text(route)))
+              .map((route) => DropdownMenuItem<String>(
+                  value: route.id,
+                  child: Text(
+                    '${route.fromLocation} đến ${route.toLocation}',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    // style: TextStyle(fontSize: 12),
+                  )))
               .toList());
 
   Widget _dropDownTime({
@@ -212,8 +216,9 @@ class _RouteSelectPage extends State<RouteSelectPage> {
             });
           },
           hint: Text("Chọn trạm tàu", style: hintStyle),
-          items: _station
+          items: listStation
               .map((station) => DropdownMenuItem<String>(
-                  value: station, child: Text(station)))
+                  value: station.stationData.id,
+                  child: Text(station.stationData.stationName)))
               .toList());
 }

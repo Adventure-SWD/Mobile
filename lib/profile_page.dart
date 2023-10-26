@@ -1,7 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:metrofood/edit_profile.dart';
 import 'package:metrofood/login_page.dart';
 import 'package:metrofood/setting_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -12,11 +14,30 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final String userName = 'Metro Food';
+  late String username = "";
+  late String email = "";
   final String userImage =
       'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80';
 
   @override
+  void initState() {
+    getInformation();
+    super.initState();
+  }
+  void getInformation() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    username = prefs.getString('userName') ?? "";
+    email = prefs.getString('email') ?? "";
+  }
+
+  @override
   Widget build(BuildContext context) {
+    void _handleLogout() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.remove('userId');
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/login-page', ModalRoute.withName('/login-page'));
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -48,31 +69,31 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(height: 16.0),
 
             // CustomListTile
-            const CustomListTile(
+            CustomListTile(
               icon: Icons.person,
               title: 'User name',
-              subtitle: 'Lê Tuấn Kiệt',
+              subtitle: username,
             ),
 
             // CustomListTile to display Email
-            const CustomListTile(
+            CustomListTile(
               icon: Icons.email,
               title: 'Email',
-              subtitle: 'richie.lorie@example.com',
+              subtitle: email,
             ),
 
             // CustomListTile to display Phone Number
-            const CustomListTile(
-              icon: Icons.phone,
-              title: 'Phone Number',
-              subtitle: '+1 555 555 5555',
-            ),
-
-            const CustomListTile(
-              icon: Icons.location_city,
-              title: 'Address',
-              subtitle: 'Thu Duc City, Ho Chi Minh City',
-            ),
+            // const CustomListTile(
+            //   icon: Icons.phone,
+            //   title: 'Phone Number',
+            //   subtitle: '+1 555 555 5555',
+            // ),
+            //
+            // const CustomListTile(
+            //   icon: Icons.location_city,
+            //   title: 'Address',
+            //   subtitle: 'Thu Duc City, Ho Chi Minh City',
+            // ),
 
             // CustomListTile to display Purchase History
             const CustomListTile(
@@ -114,13 +135,7 @@ class _ProfilePageState extends State<ProfilePage> {
               icon: Icons.logout,
               title: 'Log out',
               onTap: () {
-                // Navigate to the settings page
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LoginScreen(),
-                  ),
-                );
+                _handleLogout();
               },
             ),
           ],
@@ -129,6 +144,8 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
+
+
 
 class CustomListTile extends StatelessWidget {
   final IconData icon;

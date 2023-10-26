@@ -32,9 +32,20 @@ class _CategoriesPageState extends State<CategoriesPage> {
   @override
   Widget build(BuildContext context) {
     if (listCategory == null || listCategory.isEmpty) {
-      return Center(
+      return Scaffold(
+        body: Stack(
+          children: [
+            Container(
+              color: Color(0xFFFAFAFA), // Màu nền xám
+            ),
+            Center(
+              child: CircularProgressIndicator(), // Màn hình loading (ví dụ: hiển thị một vòng tròn tiến trình)
+            ),
+          ],
+        ),
       );
     }
+
     return Scaffold(
       appBar: const CustomAppBar(),
       body: ListView(
@@ -44,7 +55,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
             width: 331,
             height: 63,
             decoration: ShapeDecoration(
-              color: const Color(0xFFD9D9D9),
+              color: const Color(0xFF297373),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -59,7 +70,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     Text(
                       'Ben Thanh',
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontSize: 20,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w600,
@@ -69,7 +80,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     Text(
                       '9h15',
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
@@ -84,13 +95,11 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     Transform(
                       transform: Matrix4.identity()..translate(0.0, 0.0),
                       child: Container(
-                        width: 52,
+                        width: 50,
                         height: 20,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage("https://via.placeholder.com/52x20"),
-                            fit: BoxFit.fill,
-                          ),
+                        child: Icon(
+                          Icons.arrow_forward,
+                          color: Colors.white,
                         ),
                       ),
                     )
@@ -102,7 +111,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     Text(
                       'Suoi Tien',
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontSize: 20,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w600,
@@ -112,7 +121,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     Text(
                       '9h45',
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
@@ -129,6 +138,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
           SingleChildScrollView(
             child: Container (
             child: GridView.builder(
+              physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -143,7 +153,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                   width: 150,
                   height: 150,
                   decoration: ShapeDecoration(
-                    color: const Color(0xFFD9D9D9),
+                    color: Color(0xFFFF8552),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -157,7 +167,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                           width: 80,
                           height: 80,
                           decoration: const ShapeDecoration(
-                            color: Colors.black,
+                            color: Color(0xFFE6E6E6),
                             shape: OvalBorder(),
                           ),
                         ),
@@ -165,7 +175,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                       Text(
                         listCategory[index], // Sử dụng dữ liệu từ danh sách
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontSize: 14,
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.w700,

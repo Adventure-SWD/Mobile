@@ -11,6 +11,7 @@ import 'package:metrofood/setting_page.dart';
 
 //imports firebase
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 
 //screens
@@ -88,17 +89,38 @@ class MyApp extends StatelessWidget {
 class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Future<String?> getUserId() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      return prefs.getString("userId");
+    }
     return Scaffold(
-      body: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
+      body: FutureBuilder<String?>(
+        future: getUserId(),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return MyHomePage();
+          if (snapshot.connectionState == ConnectionState.done) {
+            // Kiểm tra nếu userId không null, tức là người dùng đã đăng nhập
+            if (snapshot.hasData && snapshot.data != null) {
+              return MyHomePage();
+            } else {
+              return LoginScreen();
+            }
           } else {
-            return MyHomePage();
+            // Hiển thị một tiêu đề tạm thời hoặc tiêu đề loading trong quá trình kiểm tra
+            return Center(child: CircularProgressIndicator());
           }
         },
       ),
+      // body: StreamBuilder<User?>(
+      //   stream: FirebaseAuth.instance.authStateChanges(),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.hasData) {
+      //       return MyHomePage();
+      //     } else {
+      //       return LoginScreen();
+      //     }
+      //
+      //   },
+      // ),
     );
   }
 }
