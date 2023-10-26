@@ -26,8 +26,10 @@ class _ProfilePageState extends State<ProfilePage> {
   }
   void getInformation() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    username = prefs.getString('userName') ?? "";
-    email = prefs.getString('email') ?? "";
+    setState(() {
+      username = prefs.getString('userName') ?? "";
+      email = prefs.getString('email') ?? "";
+    });
   }
 
   @override
