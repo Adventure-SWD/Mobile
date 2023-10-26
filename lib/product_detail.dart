@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:metrofood/Model/products.dart';
-import 'package:metrofood/baseclient.dart';
+import 'package:metrofood/api/baseclient.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final String id;

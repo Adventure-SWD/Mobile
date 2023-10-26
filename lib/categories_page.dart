@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:metrofood/Model/category.dart';
 import 'package:metrofood/app_bar.dart';
-import 'package:metrofood/baseclient.dart';
+import 'package:metrofood/api/baseclient.dart';
 
 class CategoriesPage extends StatefulWidget{
   static const routeName = '/categories-page';
