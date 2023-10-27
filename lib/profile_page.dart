@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:metrofood/Model/customer.dart';
+import 'package:metrofood/api/baseclient.dart';
 import 'package:metrofood/edit_profile.dart';
 import 'package:metrofood/login_page.dart';
 import 'package:metrofood/setting_page.dart';
@@ -14,6 +16,8 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final String userName = 'Metro Food';
+  late Future<Customer> futureCustomer;
+  late Customer customer = Customer.empty();
   late String username = "";
   late String email = "";
   final String userImage =
@@ -21,9 +25,24 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
+    initializedData();
     getInformation();
     super.initState();
   }
+
+  Future<void> initializedData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? id = prefs.getString('userId');
+    if(id != null) {
+      futureCustomer = BaseClient().fetchCustomerById(id);
+    }
+    await futureCustomer.then((value) {
+      setState(() {
+        customer = value;
+      });
+    });
+  }
+
   void getInformation() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -39,6 +58,20 @@ class _ProfilePageState extends State<ProfilePage> {
       prefs.remove('userId');
       Navigator.pushNamedAndRemoveUntil(
           context, '/login-page', ModalRoute.withName('/login-page'));
+    }
+    if(customer.customerId.isEmpty || customer.customerId == null) {
+      return Scaffold(
+        body: Stack(
+          children: [
+            Container(
+              color: Color(0xFFFAFAFA), // Màu nền xám
+            ),
+            Center(
+              child: CircularProgressIndicator(), // Màn hình loading (ví dụ: hiển thị một vòng tròn tiến trình)
+            ),
+          ],
+        ),
+      );
     }
     return Scaffold(
       appBar: AppBar(
@@ -74,14 +107,14 @@ class _ProfilePageState extends State<ProfilePage> {
             CustomListTile(
               icon: Icons.person,
               title: 'User name',
-              subtitle: username,
+              subtitle: customer.customerData.firstName + " " + customer.customerData.lastName,
             ),
 
             // CustomListTile to display Email
             CustomListTile(
               icon: Icons.email,
               title: 'Email',
-              subtitle: email,
+              subtitle: customer.customerData.email,
             ),
 
             // CustomListTile to display Phone Number

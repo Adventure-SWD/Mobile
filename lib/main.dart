@@ -48,8 +48,8 @@ Future<void> main() async {
   // UserCredential userCredential = await FirebaseAuth.instance.signInAnonymously();
   // FirebaseMessaging.onBackgroundMessage((message) => _firebaseMessagingBackgroundHandler(message));
 
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
   await FirebaseApi().initNotification();
 
   runApp(const MyApp());

@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:metrofood/Model/album.dart';
 import 'package:metrofood/Model/category.dart';
+import 'package:metrofood/Model/customer.dart';
 import 'package:metrofood/Model/products.dart';
 import 'package:metrofood/Model/route.dart';
 import 'package:metrofood/Model/station.dart';
@@ -35,6 +36,39 @@ class BaseClient {
         headers: {'Content-Type': 'application/json'});
     if (response.statusCode == 200) {
       return Users.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception(response.statusCode);
+    }
+  }
+  Future<Customer> fetchRegister(
+      String email, String password, String firstName,
+      String lastName, String address, String phone) async {
+    var data = {
+      "email": email,
+      "password": password,
+      "firstName": firstName,
+      "lastName": lastName,
+      "address": address,
+      "phone": phone
+    };
+    final response = await http.post(
+        Uri.parse('http://13.210.56.232/api/v1/customer/register-customer'),
+        body: json.encode(data),
+        headers: {'Content-Type': 'application/json'});
+    if (response.statusCode == 200) {
+      return Customer.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception(response.statusCode);
+    }
+  }
+
+  Future<Customer> fetchCustomerById(String id) async {
+    var data = {'id': id};
+    final response = await http.get(
+        Uri.parse('http://13.210.56.232/api/v1/customer/get-customer-by-id?id=${id}')
+    );
+    if (response.statusCode == 200) {
+      return Customer.fromJson(jsonDecode(response.body));
     } else {
       throw Exception(response.statusCode);
     }
