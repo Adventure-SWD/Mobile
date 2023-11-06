@@ -1,26 +1,27 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:metrofood/Model/category.dart';
 import 'package:metrofood/Model/products.dart';
 import 'package:metrofood/api/baseclient.dart';
-import 'package:metrofood/category_product_page.dart';
-import 'dart:async';
-
 import 'package:metrofood/product_detail.dart';
 
-
-class HomePage extends StatefulWidget {
-  static const routeName = '/home-page';
-  const HomePage({Key? key}) : super(key: key);
+class CategoryProductPage extends StatefulWidget {
+  static const routeName = '/category_product-page';
+  //const CategoryProductPage({super.key});
+  //final String id;
+  final String categoryId;
+  const CategoryProductPage({Key? key, required this.categoryId}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _HomePageState();
+  State<CategoryProductPage> createState() => _CategoryProductPageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  // test cate
+class _CategoryProductPageState extends State<CategoryProductPage> {
+  // test category
   late Future<List<Categories>> futureCategory;
-  late List<Categories> listCategory = [];
-
+  List<String> listCategory = [];
   late Future<List<Products>> futureProductCategory;
   late List<Products> listProductCategory = [];
 
@@ -42,19 +43,19 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> initializeData() async {
-    futureProduct = BaseClient().fetchProduct();
+    futureProduct = BaseClient().fetchProductByCateId(widget.categoryId);
     await futureProduct.then((value) {
       setState(() {
         listProduct = value.toList();
       });
     });
 
-    futureCategory = BaseClient().fetchCategory();
-    await futureCategory.then((value) {
+    /*futureProductCategory = BaseClient().fetchProductByCateId(widget.id);
+    futureProductCategory.then((value) {
       setState(() {
-        listCategory = value.toList();
+        listProductCategory = value.map((e) => e.categoryId).cast<Products>().toList();
       });
-    });
+    });*/
   }
 
   void startImageSlider() {
@@ -94,177 +95,6 @@ class _HomePageState extends State<HomePage> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Container(
-            width: 288,
-            height: 127,
-            decoration: ShapeDecoration(
-              color: const Color(0xFFFF8552),
-              shape: RoundedRectangleBorder(
-                side: const BorderSide(width: 1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              shadows: const [
-                BoxShadow(
-                  color: Color(0x3F000000),
-                  blurRadius: 10,
-                  offset: Offset(0, 4),
-                  spreadRadius: 0,
-                )
-              ],
-            ),
-            child: ClipRRect (
-              borderRadius: BorderRadius.circular(10),
-              child: Image.asset(
-                imageUrls[currentImageIndex],
-                fit: BoxFit.cover,
-              ),
-            )
-          ),
-          const SizedBox(height: 30,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Categories',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 15,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w300,
-                  height: 0,
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, '/categories-page');
-                },
-                child: const Text(
-                  'See all',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15,
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w300,
-                    height: 0,
-                  ),
-                ),
-              )
-            ],
-          ),
-          const SizedBox(height: 10,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              InkWell(
-                onTap: () {
-                  // Navigate to the settings page
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CategoryProductPage(categoryId: "${listCategory[0].categoryName}"),
-                    ),
-                  );
-                },
-                child: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: const ShapeDecoration(
-                    color: Color(0xFFFF8552),
-                    shape: OvalBorder(),
-                  ),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Icon(
-                      Icons.lunch_dining,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  // Navigate to the settings page
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CategoryProductPage(categoryId: "${listCategory[1].categoryName}"),
-                    ),
-                  );
-                },
-                child: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: const ShapeDecoration(
-                    color: Color(0xFFFF8552),
-                    shape: OvalBorder(),
-                  ),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Icon(
-                      Icons.icecream,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  // Navigate to the settings page
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CategoryProductPage(categoryId: "${listCategory[2].categoryName}"),
-                    ),
-                  );
-                },
-                child: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: const ShapeDecoration(
-                    color: Color(0xFFFF8552),
-                    shape: OvalBorder(),
-                  ),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Icon(
-                      Icons.fastfood,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  // Navigate to the settings page
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CategoryProductPage(categoryId: "${listCategory[3].categoryName}"),
-                    ),
-                  );
-                },
-                child: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: const ShapeDecoration(
-                    color: Color(0xFFFF8552),
-                    shape: OvalBorder(),
-                  ),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Icon(
-                      Icons.liquor,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
           const SizedBox(height: 40,),
           const Text(
             'Popular',
@@ -587,7 +417,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
-                           Align(
+                          Align(
                             alignment: Alignment.bottomLeft,
                             child: Text(
                               '${listProduct[4].price.toString()} VND',
@@ -653,7 +483,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
-                           Align(
+                          Align(
                             alignment: Alignment.bottomLeft,
                             child: Text(
                               '${listProduct[5].price.toString()} VND',
@@ -694,6 +524,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
 }
-
