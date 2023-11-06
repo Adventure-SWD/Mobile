@@ -12,7 +12,7 @@ class MenuProducts {
   String id;
   String menuId;
   String productId;
-  int priceOfProductBelongToTimeService;
+  double priceOfProductBelongToTimeService;
   DateTime created;
   MenuData menuData;
   ProductData productData;
