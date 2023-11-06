@@ -31,7 +31,7 @@ class BaseClient {
   Future<Users> fetchLogin(String email, String password) async {
     var data = {'email': email, 'password': password};
     final response = await http.post(
-        Uri.parse('http://13.210.56.232/api/v1/auth/login'),
+        Uri.parse('http://13.210.56.232/api/v1/auths/login'),
         body: json.encode(data),
         headers: {'Content-Type': 'application/json'});
     if (response.statusCode == 200) {
@@ -100,7 +100,7 @@ class BaseClient {
 
   Future<List<Categories>> fetchCategory() async {
     final response = await http
-        .get(Uri.parse('http://13.210.56.232/api/v1/category/get-all'));
+        .get(Uri.parse('http://13.210.56.232/api/v1/categories'));
 
     if (response.statusCode == 200) {
       final List result = json.decode(response.body);
@@ -112,7 +112,7 @@ class BaseClient {
 
   Future<List<Products>> fetchProduct() async {
     final response = await http
-        .get(Uri.parse('http://13.210.56.232/api/v1/product/get-all'));
+        .get(Uri.parse('http://13.210.56.232/api/v1/products'));
 
     if (response.statusCode == 200) {
       final List result = json.decode(response.body);
@@ -124,7 +124,7 @@ class BaseClient {
 
   Future<Products> fetchProductById(String id) async {
     final response = await http.get(
-        Uri.parse('http://13.210.56.232/api/v1/product/get-by-id?Id=${id}'));
+        Uri.parse('http://13.210.56.232/api/v1/products/${id}'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
