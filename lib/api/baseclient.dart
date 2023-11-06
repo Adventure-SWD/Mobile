@@ -9,6 +9,8 @@ import 'package:metrofood/Model/customer.dart';
 import 'package:metrofood/Model/products.dart';
 import 'package:metrofood/Model/route.dart';
 import 'package:metrofood/Model/station.dart';
+import 'package:metrofood/Model/station_trip.dart';
+import 'package:metrofood/Model/trip.dart';
 import 'package:metrofood/Model/user.dart';
 
 const String baseUrl = 'http://13.210.56.232/api/v1';
@@ -31,7 +33,7 @@ class BaseClient {
   Future<Users> fetchLogin(String email, String password) async {
     var data = {'email': email, 'password': password};
     final response = await http.post(
-        Uri.parse('http://13.210.56.232/api/v1/auths/login'),
+        Uri.parse('${baseUrl}/auths/login'),
         body: json.encode(data),
         headers: {'Content-Type': 'application/json'});
     if (response.statusCode == 200) {
@@ -52,7 +54,7 @@ class BaseClient {
       "phone": phone
     };
     final response = await http.post(
-        Uri.parse('http://13.210.56.232/api/v1/customer/register-customer'),
+        Uri.parse('${baseUrl}/customer/register-customer'),
         body: json.encode(data),
         headers: {'Content-Type': 'application/json'});
     if (response.statusCode == 200) {
@@ -65,7 +67,7 @@ class BaseClient {
   Future<Customer> fetchCustomerById(String id) async {
     var data = {'id': id};
     final response = await http.get(
-        Uri.parse('http://13.210.56.232/api/v1/customer/get-customer-by-id?id=${id}')
+        Uri.parse('${baseUrl}/customers/${id}')
     );
     if (response.statusCode == 200) {
       return Customer.fromJson(jsonDecode(response.body));
@@ -76,7 +78,7 @@ class BaseClient {
 
   Future<List<Routes>> fetchRoute() async {
     final response =
-        await http.get(Uri.parse('http://13.210.56.232/api/v1/route/get-all'));
+        await http.get(Uri.parse('${baseUrl}/route'));
 
     if (response.statusCode == 200) {
       final List result = json.decode(response.body);
@@ -85,10 +87,32 @@ class BaseClient {
       throw Exception('Failed to load data');
     }
   }
+  Future<List<Trips>> fetchTrip() async {
+    final response =
+    await http.get(Uri.parse('${baseUrl}/trips'));
+
+    if (response.statusCode == 200) {
+      final List result = json.decode(response.body);
+      return result.map((e) => Trips.fromJson(e)).toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+  Future<List<StationTrips>> fetchStationTrips() async {
+    final response =
+    await http.get(Uri.parse('${baseUrl}/station-trips'));
+
+    if (response.statusCode == 200) {
+      final List result = json.decode(response.body);
+      return result.map((e) => StationTrips.fromJson(e)).toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 
   Future<List<Station>> fetchStation() async {
     final response = await http
-        .get(Uri.parse('http://13.210.56.232/api/v1/station/get-all-station'));
+        .get(Uri.parse('${baseUrl}/stations'));
 
     if (response.statusCode == 200) {
       final List result = json.decode(response.body);
@@ -100,7 +124,7 @@ class BaseClient {
 
   Future<List<Categories>> fetchCategory() async {
     final response = await http
-        .get(Uri.parse('http://13.210.56.232/api/v1/categories'));
+        .get(Uri.parse('${baseUrl}/categories'));
 
     if (response.statusCode == 200) {
       final List result = json.decode(response.body);
@@ -112,7 +136,7 @@ class BaseClient {
 
   Future<List<Products>> fetchProduct() async {
     final response = await http
-        .get(Uri.parse('http://13.210.56.232/api/v1/products'));
+        .get(Uri.parse('${baseUrl}/products'));
 
     if (response.statusCode == 200) {
       final List result = json.decode(response.body);
@@ -124,7 +148,7 @@ class BaseClient {
 
   Future<Products> fetchProductById(String id) async {
     final response = await http.get(
-        Uri.parse('http://13.210.56.232/api/v1/products/${id}'));
+        Uri.parse('${baseUrl}/products/${id}'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,

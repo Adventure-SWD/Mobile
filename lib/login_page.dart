@@ -218,6 +218,7 @@ class __FormContentState extends State<_FormContent> {
                   passwordController.text = 'P@ssw0rd1';
                   futureUser = BaseClient().fetchLogin(
                       emailController.text, passwordController.text);
+                  // signIn();
                   LoginUser();
                 },
               ),
@@ -257,10 +258,12 @@ class __FormContentState extends State<_FormContent> {
     try {
       UserCredential credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(
-              email: emailController.text.trim(),
-              password: passwordController.text.trim());
-      print((credential.credential ?? null).toString());
-      Navigator.pushNamed(context, '/home-page');
+              email: 'user@gmail.com',
+              password: '123456');
+      // print((credential.credential ?? null).toString());
+      futureUser = BaseClient().fetchLogin(
+          emailController.text, passwordController.text);
+      Navigator.pushNamed(context, '/main-page');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');

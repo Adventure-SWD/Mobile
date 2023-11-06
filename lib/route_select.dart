@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:metrofood/Model/album.dart';
 import 'package:metrofood/Model/route.dart';
 import 'package:metrofood/Model/station.dart';
+import 'package:metrofood/Model/station_trip.dart';
+import 'package:metrofood/Model/trip.dart';
 import 'package:metrofood/api/baseclient.dart';
 
 class RouteSelectPage extends StatefulWidget {
@@ -15,11 +17,15 @@ class RouteSelectPage extends StatefulWidget {
 class _RouteSelectPage extends State<RouteSelectPage> {
   late Future<Album> futureAlbum;
   late Future<List<Routes>> futureRoute;
+  late Future<List<Trips>> futureTrip;
   late Future<List<Station>> futureStation;
+  late Future<List<StationTrips>> futureStationTrips;
   late List<Routes> listRoute = [];
+  late List<Trips> listTrip = [];
   late List<Station> listStation = [];
+  late List<StationTrips> listStationTrips = [];
   String? _selectedRoute;
-
+  String? _selectedTrip;
   String? _selectedTime;
   final List<String> _time = ['6:00 AM', '6:15 AM', '6:30 AM'];
 
@@ -32,16 +38,40 @@ class _RouteSelectPage extends State<RouteSelectPage> {
     super.initState();
   }
 
+  void filterTripsByRouteId(String routeId) {
+    futureTrip.then((value) {
+      listTrip = value.where((trip) => trip.routeId == routeId).toList();
+    });
+  }
+
+  void filterStationsByTripId(String tripId) {
+    futureStationTrips.then((value) {
+      listStationTrips = value.where((station) => station.tripId == tripId).toList();
+    });
+  }
+
   Future<void> initializeData() async {
     try {
       futureAlbum = BaseClient().fetchAlbum();
       futureRoute = BaseClient().fetchRoute();
+      futureTrip = BaseClient().fetchTrip();
+      futureStationTrips = BaseClient().fetchStationTrips();
       futureStation = BaseClient().fetchStation();
       await futureRoute.then((value) {
         setState(() {
           listRoute = value.toList();
         });
       }).catchError((error) {});
+      await futureTrip.then((value) {
+        setState(() {
+          listTrip = value.toList();
+        });
+      });
+      await futureStationTrips.then((value) {
+        setState(() {
+          listStationTrips = value.toList();
+        });
+      });
       await futureStation.then((stations) {
         setState(() {
           listStation = stations.toList();
@@ -86,7 +116,7 @@ class _RouteSelectPage extends State<RouteSelectPage> {
                           borderRadius: BorderRadius.circular(8.0)),
                       child: _dropDownRoute(underline: Container())),
                 ),
-                _title("Chọn thời gian"),
+                _title("Chọn chuyến đi"),
                 Container(
                     width: double.maxFinite,
                     decoration: BoxDecoration(
@@ -154,6 +184,11 @@ class _RouteSelectPage extends State<RouteSelectPage> {
           onChanged: (String? newValue) {
             setState(() {
               _selectedRoute = newValue;
+              if (_selectedRoute != null) {
+                filterTripsByRouteId(_selectedRoute!);
+                _selectedTrip = null;
+                _selectedStation = null;
+              }
             });
           },
           isExpanded: true,
@@ -178,7 +213,7 @@ class _RouteSelectPage extends State<RouteSelectPage> {
     Color? iconEnabledColor,
   }) =>
       DropdownButton<String>(
-          value: _selectedTime,
+          value: _selectedTrip,
           underline: underline,
           icon: icon,
           dropdownColor: dropdownColor,
@@ -186,13 +221,17 @@ class _RouteSelectPage extends State<RouteSelectPage> {
           iconEnabledColor: iconEnabledColor,
           onChanged: (String? newValue) {
             setState(() {
-              _selectedTime = newValue;
+              _selectedTrip = newValue;
+              if (_selectedTrip != null) {
+                filterStationsByTripId(_selectedTrip!);
+                _selectedStation = null;
+              }
             });
           },
-          hint: Text("Chọn thời gian", style: hintStyle),
-          items: _time
-              .map((time) =>
-                  DropdownMenuItem<String>(value: time, child: Text(time)))
+          hint: Text("Chọn chuyến đi", style: hintStyle),
+          items: listTrip
+              .map((trip) =>
+                  DropdownMenuItem<String>(value: trip.id, child: Text(trip.tripName)))
               .toList());
 
   Widget _dropDownStation({
@@ -216,7 +255,7 @@ class _RouteSelectPage extends State<RouteSelectPage> {
             });
           },
           hint: Text("Chọn trạm tàu", style: hintStyle),
-          items: listStation
+          items: listStationTrips
               .map((station) => DropdownMenuItem<String>(
                   value: station.stationData.id,
                   child: Text(station.stationData.stationName)))
