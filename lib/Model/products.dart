@@ -14,6 +14,7 @@ class Products {
   String productName;
   String productDescription;
   dynamic image;
+  int quantity;
   double price;
   CategoryData categoryData;
 
@@ -25,6 +26,7 @@ class Products {
     required this.image,
     required this.price,
     required this.categoryData,
+    this.quantity = 1
   });
 
   factory Products.fromJson(Map<String, dynamic> json) => Products(

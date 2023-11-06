@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:metrofood/Model/cart.dart';
 import 'package:metrofood/api/firebase_api.dart';
 import 'package:metrofood/cart_page.dart';
 import 'package:metrofood/category_product_page.dart';
@@ -11,6 +12,7 @@ import 'package:metrofood/setting_page.dart';
 
 //imports firebase
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 
@@ -29,16 +31,14 @@ Future<void> main() async {
   // Ideal time to init
   try {
     await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
-  } catch(e) {
+  } catch (e) {
     print("Firebase emulator error at e");
     print(e);
   }
   // await FirebaseAppCheck.instance.activate(
   //   androidProvider: AndroidProvider.debug
   // );
-  FirebaseAuth.instance
-      .authStateChanges()
-      .listen((User? user) {
+  FirebaseAuth.instance.authStateChanges().listen((User? user) {
     if (user == null) {
       print('User is currently signed out!');
     } else {
@@ -52,7 +52,10 @@ Future<void> main() async {
   // await Firebase.initializeApp();
   await FirebaseApi().initNotification();
 
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [ChangeNotifierProvider(create: (_) => CartProvider())],
+    child: MyApp(),
+  ));
 }
 
 @pragma('vm:entry-point')
@@ -75,6 +78,7 @@ class MyApp extends StatelessWidget {
       ),
       home: MainPage(),
       routes: {
+        RouteSelectPage.routeName: (ctx) => const RouteSelectPage(),
         LoginScreen.routeName: (ctx) => const LoginScreen(),
         RegisterScreen.routeName: (ctx) => const RegisterScreen(),
         HomePage.routeName: (ctx) => const HomePage(),
@@ -86,6 +90,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -93,6 +98,7 @@ class MainPage extends StatelessWidget {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       return prefs.getString("userId");
     }
+
     return Scaffold(
       body: FutureBuilder<String?>(
         future: getUserId(),
@@ -124,6 +130,7 @@ class MainPage extends StatelessWidget {
     );
   }
 }
+
 class MyHomePage extends StatefulWidget {
   static const routeName = '/main-page';
   const MyHomePage({super.key});
@@ -147,36 +154,32 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _showAppBar ? AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-
-          },
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications),
-            onPressed: () {
-
-            },
-          )
-        ],
-        title: const Text('Action Bar'),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-      ) : null,
-
+      appBar: _showAppBar
+          ? AppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () {},
+              ),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.notifications),
+                  onPressed: () {},
+                )
+              ],
+              title: const Text('Action Bar'),
+              centerTitle: true,
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black,
+            )
+          : null,
       body: screen[_currentIndex],
-
       bottomNavigationBar: BottomNavigationBar(
         // định dạng Footer
         fixedColor: Color(0xFFFF8552),
         type: BottomNavigationBarType.fixed,
 
         currentIndex: _currentIndex,
-        onTap: (index){
+        onTap: (index) {
           setState(() {
             _currentIndex = index;
             if (_currentIndex == 3) {
