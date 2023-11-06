@@ -6,10 +6,12 @@ import 'package:http/http.dart' as http;
 import 'package:metrofood/Model/album.dart';
 import 'package:metrofood/Model/category.dart';
 import 'package:metrofood/Model/customer.dart';
+import 'package:metrofood/Model/menu_product.dart';
 import 'package:metrofood/Model/products.dart';
 import 'package:metrofood/Model/route.dart';
 import 'package:metrofood/Model/station.dart';
 import 'package:metrofood/Model/station_trip.dart';
+import 'package:metrofood/Model/store_menu.dart';
 import 'package:metrofood/Model/trip.dart';
 import 'package:metrofood/Model/user.dart';
 
@@ -145,6 +147,17 @@ class BaseClient {
       throw Exception('Failed to load data');
     }
   }
+  Future<List<MenuProducts>> fetchMenuProductsByMenuId(String id) async {
+    final response = await http
+        .get(Uri.parse('${baseUrl}/menu-products/menus/${id}'));
+
+    if (response.statusCode == 200) {
+      final List result = json.decode(response.body);
+      return result.map((e) => MenuProducts.fromJson(e)).toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 
   Future<Products> fetchProductById(String id) async {
     final response = await http.get(
@@ -154,6 +167,21 @@ class BaseClient {
       // If the server did return a 200 OK response,
       // then parse the JSON.
       return Products.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load product');
+    }
+  }
+  Future<List<StoreMenus>> fetchStoreMenuByStoreId(String id) async {
+    final response = await http.get(
+        Uri.parse('${baseUrl}/store-menus/${id}'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      final List result = json.decode(response.body);
+      return result.map((e) => StoreMenus.fromJson(e)).toList();
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
