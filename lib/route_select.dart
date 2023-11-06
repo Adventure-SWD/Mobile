@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:metrofood/Model/album.dart';
+import 'package:metrofood/Model/cart.dart';
 import 'package:metrofood/Model/menu_product.dart';
+import 'package:metrofood/Model/products.dart';
 import 'package:metrofood/Model/route.dart';
 import 'package:metrofood/Model/station.dart';
 import 'package:metrofood/Model/station_trip.dart';
 import 'package:metrofood/Model/store_menu.dart';
 import 'package:metrofood/Model/trip.dart';
 import 'package:metrofood/api/baseclient.dart';
+import 'package:provider/provider.dart';
 
 class RouteSelectPage extends StatefulWidget {
   static const routeName = '/routeSelect-page';
@@ -72,7 +75,15 @@ class _RouteSelectPage extends State<RouteSelectPage> {
       print(error);
     }
   }
-
+  Future<Products> addProductClicked(String id) async {
+    try {
+      Products product = await BaseClient().fetchProductById(id);
+      return product;
+    } catch (error) {
+      print(error);
+      throw error; // Nếu có lỗi, bạn có thể ném ngoại lệ hoặc xử lý theo ý của bạn
+    }
+  }
   Future<void> initializeData() async {
     try {
       futureAlbum = BaseClient().fetchAlbum();
@@ -110,6 +121,7 @@ class _RouteSelectPage extends State<RouteSelectPage> {
 
   @override
   Widget build(BuildContext context) {
+    final cartProvider = context.read<CartProvider>();
     if (isLoading) {
       return Center(
         child: CircularProgressIndicator(),
@@ -228,6 +240,23 @@ class _RouteSelectPage extends State<RouteSelectPage> {
                         fontWeight: FontWeight.w700,
                         height: 0,
                       ),
+                    ),
+                    ElevatedButton(onPressed: () {
+                      Future<Products> productFuture = addProductClicked(listMenuProduct[index].productId);
+                      productFuture.then((product) {
+                        cartProvider.addToCart(product);
+                        // Cập nhật giao diện người dùng nếu cần thiết
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Sản phẩm đã được thêm vào giỏ hàng.'),
+                          ),
+                        );
+                      }).catchError((error) {
+                        print(error);
+                        // Xử lý lỗi nếu có
+                      });
+                    }
+                    , child: const Text('Thêm vào giỏ hàng'),
                     )
                   ],
                 ),
