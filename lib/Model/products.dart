@@ -29,6 +29,17 @@ class Products {
     this.quantity = 1
   });
 
+  factory Products.empty() => Products(
+    id: 'default',
+    categoryId: 'default',
+    productName: 'default',
+    productDescription: 'default',
+    image: 'default',
+    price: 0.0,
+    categoryData: CategoryData.empty(),
+    quantity: 0, // Đặt số lượng mặc định là 0
+  );
+
   factory Products.fromJson(Map<String, dynamic> json) => Products(
     id: json["id"],
     categoryId: json["categoryID"],
@@ -70,6 +81,17 @@ class CategoryData {
     required this.id,
     required this.domainEvents,
   });
+
+  factory CategoryData.empty() => CategoryData(
+    categoryName: 'default',
+    created: DateTime.now(),
+    createBy: 'default',
+    lastModified: 'default',
+    lastModifiedBy: 'default',
+    isDelete: false,
+    id: 'default',
+    domainEvents: [],
+  );
 
   factory CategoryData.fromJson(Map<String, dynamic> json) => CategoryData(
     categoryName: json["categoryName"],

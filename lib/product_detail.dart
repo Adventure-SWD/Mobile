@@ -14,7 +14,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   late Future<List<Products>> futureListProduct;
   late List<String> listProductId;
   late Future<Products> futureProduct;
-  late Products product;
+  late Products product = Products.empty();
   late int imagePos = 0;
 
 
@@ -46,8 +46,19 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    if(product == null) {
-      return Center();
+    if(product.id == 'default') {
+      return Scaffold(
+        body: Stack(
+          children: [
+            Container(
+              color: Color(0xFFFAFAFA), // Màu nền xám
+            ),
+            Center(
+              child: CircularProgressIndicator(), // Màn hình loading (ví dụ: hiển thị một vòng tròn tiến trình)
+            ),
+          ],
+        ),
+      );
     }
     return SafeArea(
       child: Scaffold(

@@ -1,26 +1,44 @@
 {
   "project_info": {
-    "project_number": "408679819932",
-    "project_id": "metrofood-4e6ca",
-    "storage_bucket": "metrofood-4e6ca.appspot.com"
+    "project_number": "593276146746",
+    "project_id": "metropickup-d5255",
+    "storage_bucket": "metropickup-d5255.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:408679819932:android:0fe034a1923be261509b59",
+        "mobilesdk_app_id": "1:593276146746:android:2220503acec138ef8dd103",
         "android_client_info": {
           "package_name": "com.example.metrofood"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "593276146746-r7f7nv56t6r3mm0nat22uoq1qggiqn1k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.metrofood",
+            "certificate_hash": "10e5c37022b7feeb4e7d5af0c0a75c49458ce820"
+          }
+        },
+        {
+          "client_id": "593276146746-ffu9ru2rmqibhmo5l52u2os7k8sqra22.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyBIZOxQ5sa0dwDcm409HXrnuUg449-E7zo"
+          "current_key": "AIzaSyADPJa1WkCFw19mBlLDA9P8frHw7uYUWGI"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "593276146746-ffu9ru2rmqibhmo5l52u2os7k8sqra22.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

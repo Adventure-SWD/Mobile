@@ -35,9 +35,6 @@ Future<void> main() async {
     print("Firebase emulator error at e");
     print(e);
   }
-  // await FirebaseAppCheck.instance.activate(
-  //   androidProvider: AndroidProvider.debug
-  // );
   FirebaseAuth.instance.authStateChanges().listen((User? user) {
     if (user == null) {
       print('User is currently signed out!');
@@ -47,9 +44,6 @@ Future<void> main() async {
   });
   // UserCredential userCredential = await FirebaseAuth.instance.signInAnonymously();
   // FirebaseMessaging.onBackgroundMessage((message) => _firebaseMessagingBackgroundHandler(message));
-
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
   await FirebaseApi().initNotification();
 
   runApp(MultiProvider(
