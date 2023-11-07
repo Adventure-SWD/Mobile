@@ -9,6 +9,7 @@ import 'package:metrofood/Model/customer.dart';
 import 'package:metrofood/Model/menu_product.dart';
 import 'package:metrofood/Model/menu_product_new.dart';
 import 'package:metrofood/Model/order.dart';
+import 'package:metrofood/Model/order_detail.dart';
 import 'package:metrofood/Model/products.dart';
 import 'package:metrofood/Model/route.dart';
 import 'package:metrofood/Model/station.dart';
@@ -226,7 +227,17 @@ class BaseClient {
       throw Exception('Failed to load product');
     }
   }
+  Future<List<OrderDetail>> fetchOrderDetailByOrderId(String id) async {
+    final response = await http
+        .get(Uri.parse('${baseUrl}/order-details/${id}'));
 
+    if (response.statusCode == 200) {
+      final List result = json.decode(response.body);
+      return result.map((e) => OrderDetail.fromJson(e)).toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
   Future<Album> fetchAlbum() async {
     final response = await http
         .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));

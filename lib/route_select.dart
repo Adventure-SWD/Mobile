@@ -82,10 +82,18 @@ class _RouteSelectPage extends State<RouteSelectPage> {
       setState(() {
         isLoading = false;
       });
-
     } catch (error) {
+      showSnackbar("Không có cửa hàng đang hoạt động cho chuyến này");
       print(error);
     }
+  }
+
+  void showSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
   }
 
   Future<Products> addProductClicked(String id) async {
