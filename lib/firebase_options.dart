@@ -17,15 +17,24 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,38 +52,11 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDEm3ju447ylHYxz3ufIsc3k6wlWCk3U18',
-    appId: '1:408679819932:web:2fef62c276e41b25509b59',
-    messagingSenderId: '408679819932',
-    projectId: 'metrofood-4e6ca',
-    authDomain: 'metrofood-4e6ca.firebaseapp.com',
-    storageBucket: 'metrofood-4e6ca.appspot.com',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBIZOxQ5sa0dwDcm409HXrnuUg449-E7zo',
-    appId: '1:408679819932:android:0fe034a1923be261509b59',
-    messagingSenderId: '408679819932',
-    projectId: 'metrofood-4e6ca',
-    storageBucket: 'metrofood-4e6ca.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyARHYhpFhkRU7L-O27ngonrjvUdUfb3ugM',
-    appId: '1:408679819932:ios:66e83505fc97f72d509b59',
-    messagingSenderId: '408679819932',
-    projectId: 'metrofood-4e6ca',
-    storageBucket: 'metrofood-4e6ca.appspot.com',
-    iosBundleId: 'com.example.metrofood',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyARHYhpFhkRU7L-O27ngonrjvUdUfb3ugM',
-    appId: '1:408679819932:ios:93ac37ff77f0e729509b59',
-    messagingSenderId: '408679819932',
-    projectId: 'metrofood-4e6ca',
-    storageBucket: 'metrofood-4e6ca.appspot.com',
-    iosBundleId: 'com.example.metrofood.RunnerTests',
+    apiKey: 'AIzaSyADPJa1WkCFw19mBlLDA9P8frHw7uYUWGI',
+    appId: '1:593276146746:android:2220503acec138ef8dd103',
+    messagingSenderId: '593276146746',
+    projectId: 'metropickup-d5255',
+    storageBucket: 'metropickup-d5255.appspot.com',
   );
 }

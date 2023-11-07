@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:google_sign_in/testing.dart';
 import 'package:metrofood/Model/user.dart';
 import 'package:metrofood/api/baseclient.dart';
 import 'package:metrofood/regis_page.dart';
@@ -79,6 +81,7 @@ class _FormContent extends StatefulWidget {
 }
 
 class __FormContentState extends State<_FormContent> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   late Future<Users> futureUser;
   late Users user = new Users(
       id: "",
@@ -218,8 +221,29 @@ class __FormContentState extends State<_FormContent> {
                   passwordController.text = 'P@ssw0rd1';
                   futureUser = BaseClient().fetchLogin(
                       emailController.text, passwordController.text);
-                  // signIn();
+                  signIn();
                   LoginUser();
+                },
+              ),
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text(
+                    'Sign in with Google',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                onPressed: () async {
+                  // User? user = await signInWithGoogle();
+                  await signInWithGoogle();
                 },
               ),
             ),
@@ -241,8 +265,59 @@ class __FormContentState extends State<_FormContent> {
         ),
       ),
     );
-  }
 
+  }
+  // Future<User?> signInWithGoogle() async {
+  Future<void> signInWithGoogle() async {
+    try {
+      // Khởi tạo đối tượng GoogleSignIn
+      final GoogleSignInAccount? googleSignInAccount = await GoogleSignIn().signIn();
+
+      // Nếu người dùng chọn tài khoản Google, thực hiện xác thực
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken,
+        );
+        if(credential.accessToken != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content:
+              Text('Đăng nhập thành công'),
+            ),
+          );
+          futureUser = BaseClient().fetchLogin(
+              'enduser@gmail.com', 'P@ssw0rd1');
+          print('Đăng nhập thành công');
+          LoginUser();
+        }
+        // Đăng nhập vào Firebase với credential từ Google
+        // final UserCredential authResult = await _auth.signInWithCredential(credential);
+        // final User? user = authResult.user;
+        // return user;
+      } else {
+        // Người dùng hủy đăng nhập hoặc không chọn tài khoản Google
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content:
+            Text('Đăng nhập bị huỷ'),
+          ),
+        );
+        print('Đã xảy ra lỗi khi đăng nhập bằng Google, huỷ đăng nhập');
+        return null;
+      }
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content:
+          Text('Xảy ra lỗi khi đăng nhập'),
+        ),
+      );
+      print('Đã xảy ra lỗi khi đăng nhập bằng Google: $error');
+      return null;
+    }
+  }
   Widget _gap() => const SizedBox(height: 16);
   void _saveAndRedirectToHome() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -254,24 +329,31 @@ class __FormContentState extends State<_FormContent> {
         arguments: (user));
   }
 
-  Future signIn() async {
+  Future<void> signIn() async {
     try {
-      UserCredential credential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-              email: 'user@gmail.com',
-              password: '123456');
-      // print((credential.credential ?? null).toString());
-      futureUser = BaseClient().fetchLogin(
-          emailController.text, passwordController.text);
-      Navigator.pushNamed(context, '/main-page');
+      UserCredential credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: 'user@gmail.com',
+        password: '123456',
+      );
+      User? user = credential.user;
+
+      if (user != null) {
+        // Đăng nhập thành công, thực hiện điều gì đó ở đây
+        Navigator.pushNamed(context, '/main-page');
+      } else {
+        // Người dùng không được trả về hoặc có lỗi khác
+        print('Đăng nhập thất bại.');
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        print('Không tìm thấy người dùng với địa chỉ email này.');
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provinded for that user.');
+        print('Sai mật khẩu cho người dùng này.');
       } else {
-        print(e.message);
+        print('Lỗi: ${e.message}');
       }
+    } catch (e) {
+      print('Lỗi không xác định: $e');
     }
   }
 }

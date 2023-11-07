@@ -10,6 +10,7 @@ import 'package:metrofood/Model/store_menu.dart';
 import 'package:metrofood/Model/trip.dart';
 import 'package:metrofood/api/baseclient.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RouteSelectPage extends StatefulWidget {
   static const routeName = '/routeSelect-page';
@@ -59,12 +60,13 @@ class _RouteSelectPage extends State<RouteSelectPage> {
 
   Future<void> getMenuAndProductByStoreId(String id) async {
     try {
-      futureStoreMenu = BaseClient().fetchStoreMenuByStoreId(id);
-      await futureStoreMenu.then((value) {
-        listStoreMenu = value.toList();
-      });
+      // futureStoreMenu = BaseClient().fetchStoreMenuByStoreId(id);
+      // await futureStoreMenu.then((value) {
+      //   listStoreMenu = value.toList();
+      // });
       futureMenuProduct = BaseClient()
-          .fetchMenuProductsByMenuId(listStoreMenu.firstOrNull!.menuId);
+          .fetchMenuProductsByMenuId(id);
+      // .fetchMenuProducts();
       await futureMenuProduct.then((value) {
         listMenuProduct = value.toList();
       });
@@ -179,27 +181,28 @@ class _RouteSelectPage extends State<RouteSelectPage> {
                     ElevatedButton(
                       onPressed: () {
                         // Mở giỏ hàng
+                        Navigator.pushNamed(context, '/cart-page');
                       },
                       child: const Text('Mở giỏ hàng'),
                     ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // var _response = BaseClient()
-                      //     .get('/route/get-all', List<Route>)
-                      //     .then((data) {
-                      //   if (data != null) {
-                      //     print('success $data');
-                      //   } else {
-                      //     print('null object');
-                      //   }
-                      // }).catchError((err) {
-                      //   print(err);
-                      // });
-                      // print(_response.toString());
-                      print(listMenuProduct.toString());
-                    },
-                    child: const Text('Text'),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     // var _response = BaseClient()
+                  //     //     .get('/route/get-all', List<Route>)
+                  //     //     .then((data) {
+                  //     //   if (data != null) {
+                  //     //     print('success $data');
+                  //     //   } else {
+                  //     //     print('null object');
+                  //     //   }
+                  //     // }).catchError((err) {
+                  //     //   print(err);
+                  //     // });
+                  //     // print(_response.toString());
+                  //     print(listMenuProduct.toString());
+                  //   },
+                  //   child: const Text('Text'),
+                  // ),
                 ],
               ),
             ),
@@ -229,14 +232,13 @@ class _RouteSelectPage extends State<RouteSelectPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                        width: 80,
-                        height: 80,
-                        decoration: const ShapeDecoration(
-                          color: Color(0xFFE6E6E6),
-                          shape: OvalBorder(),
+                    Container(
+                      width: 100,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(listMenuProduct[index].productData.image),
+                          fit: BoxFit.fill,
                         ),
                       ),
                     ),
@@ -251,26 +253,27 @@ class _RouteSelectPage extends State<RouteSelectPage> {
                         height: 0,
                       ),
                     ),
+                    Text(
+                      '${listMenuProduct[index].priceOfProductBelongToTimeService.toString()} VND',
+                      // Sử dụng dữ liệu từ danh sách
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w500,
+                        height: 0,
+                      ),
+                    ),
                     ElevatedButton(
                       onPressed: () {
-                        Future<Products> productFuture =
-                            addProductClicked(listMenuProduct[index].productId);
-                        productFuture.then((product) {
-                          product.price = listMenuProduct[index]
-                              .priceOfProductBelongToTimeService;
-                          cartProvider.addToCart(product);
+                          cartProvider.addToCart(listMenuProduct[index]);
                           setState(() {});
-                          // Cập nhật giao diện người dùng nếu cần thiết
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content:
                                   Text('Sản phẩm đã được thêm vào giỏ hàng.'),
                             ),
                           );
-                        }).catchError((error) {
-                          print(error);
-                          // Xử lý lỗi nếu có
-                        });
                       },
                       child: const Text('Thêm vào giỏ hàng'),
                     )
@@ -349,7 +352,9 @@ class _RouteSelectPage extends State<RouteSelectPage> {
           iconEnabledColor: iconEnabledColor,
           onChanged: (String? newValue) {
             setState(() {
-              _selectedTrip = newValue;
+              if(_selectedRoute != null) {
+                _selectedTrip = newValue;
+              }
               if (_selectedTrip != null) {
                 filterStationsByTripId(_selectedTrip!);
                 _selectedStation = null;
@@ -379,17 +384,25 @@ class _RouteSelectPage extends State<RouteSelectPage> {
           iconEnabledColor: iconEnabledColor,
           onChanged: (String? newValue) {
             setState(() {
-              _selectedStation = newValue;
+              if(_selectedTrip != null) {
+                _selectedStation = newValue;
+                getTripId();
+              }
               if (_selectedStation != null) {
                 getMenuAndProductByStoreId(_selectedStation!);
-                isLoading = true;
+                // isLoading = true;
               }
             });
           },
           hint: Text("Chọn trạm tàu", style: hintStyle),
           items: listStationTrips
               .map((station) => DropdownMenuItem<String>(
-                  value: station.stationData.storeId,
+                  value: station.stationId,
                   child: Text(station.stationData.stationName)))
               .toList());
+  void getTripId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("tripId", _selectedTrip!);
+    await prefs.setString("storeId", _selectedStation!);
+  }
 }

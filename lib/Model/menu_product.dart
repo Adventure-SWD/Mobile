@@ -17,6 +17,7 @@ class MenuProducts {
   MenuData menuData;
   ProductData productData;
   dynamic storeData;
+  int quantity;
 
   MenuProducts({
     required this.id,
@@ -27,13 +28,14 @@ class MenuProducts {
     required this.menuData,
     required this.productData,
     required this.storeData,
+    this.quantity = 1,
   });
 
   factory MenuProducts.fromJson(Map<String, dynamic> json) => MenuProducts(
     id: json["id"],
     menuId: json["menuID"],
     productId: json["productID"],
-    priceOfProductBelongToTimeService: json["priceOfProductBelongToTimeService"],
+    priceOfProductBelongToTimeService: (json["priceOfProductBelongToTimeService"] as int).toDouble(),
     created: DateTime.parse(json["created"]),
     menuData: MenuData.fromJson(json["menuData"]),
     productData: ProductData.fromJson(json["productData"]),
@@ -115,3 +117,37 @@ class ProductData {
     "created": created.toIso8601String(),
   };
 }
+MenuProducts getDefaultMenuProducts() {
+  return MenuProducts(
+    id: 'default',
+    menuId: 'default',
+    productId: 'default',
+    priceOfProductBelongToTimeService: 0.0,
+    created: DateTime.now(),
+    menuData: getDefaultMenuData(),
+    productData: getDefaultProductData(),
+    storeData: null,
+    quantity: 1, // Đặt số lượng mặc định là 1
+  );
+}
+
+MenuData getDefaultMenuData() {
+  return MenuData(
+    id: 'default',
+    menuName: 'default',
+    startTimeService: 'default',
+    endTimeService: 'default',
+  );
+}
+
+ProductData getDefaultProductData() {
+  return ProductData(
+    categoryId: 'default',
+    productName: 'default',
+    productDescription: 'default',
+    image: 'default',
+    price: 0,
+    created: DateTime.now(),
+  );
+}
+

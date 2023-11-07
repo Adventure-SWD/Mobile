@@ -7,6 +7,7 @@ import 'package:metrofood/Model/album.dart';
 import 'package:metrofood/Model/category.dart';
 import 'package:metrofood/Model/customer.dart';
 import 'package:metrofood/Model/menu_product.dart';
+import 'package:metrofood/Model/order.dart';
 import 'package:metrofood/Model/products.dart';
 import 'package:metrofood/Model/route.dart';
 import 'package:metrofood/Model/station.dart';
@@ -147,9 +148,20 @@ class BaseClient {
       throw Exception('Failed to load data');
     }
   }
+  Future<List<MenuProducts>> fetchMenuProducts() async {
+    final response = await http
+        .get(Uri.parse('${baseUrl}/menu-products'));
+
+    if (response.statusCode == 200) {
+      final List result = json.decode(response.body);
+      return result.map((e) => MenuProducts.fromJson(e)).toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
   Future<List<MenuProducts>> fetchMenuProductsByMenuId(String id) async {
     final response = await http
-        .get(Uri.parse('${baseUrl}/menu-products/menus/${id}'));
+        .get(Uri.parse('${baseUrl}/menu-products/stations/${id}'));
 
     if (response.statusCode == 200) {
       final List result = json.decode(response.body);
@@ -188,6 +200,21 @@ class BaseClient {
       throw Exception('Failed to load product');
     }
   }
+  Future<List<Orders>> fetchOrderByUserId(String id) async {
+    final response = await http.get(
+        Uri.parse('${baseUrl}/orders/customers/${id}'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      final List result = json.decode(response.body);
+      return result.map((e) => Orders.fromJson(e)).toList();
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load product');
+    }
+  }
 
   Future<Album> fetchAlbum() async {
     final response = await http
@@ -201,6 +228,48 @@ class BaseClient {
       // If the server did not return a 200 OK response,
       // then throw an exception.
       throw Exception('Failed to load album');
+    }
+  }
+  Future<http.Response> createOrder({
+    required String applicationUserID,
+    required String tripId,
+    required String storeId,
+    required List<MenuProducts> products,
+  }) async {
+    final apiUrl = '${baseUrl}/orders';
+    final headers = <String, String>{
+      'Content-Type': 'application/json',
+      // Các tiêu đề khác nếu cần
+    };
+
+    final orderData = {
+      'applicationUserID': applicationUserID,
+      'tripId': tripId,
+      'storeId': storeId,
+      'products': products
+          .map((product) => {
+        'productId': product.productId,
+        'quantity': product.quantity,
+        'priceOfProductBelongToTimeService': product.priceOfProductBelongToTimeService,
+      })
+          .toList(),
+    };
+
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: headers,
+      body: jsonEncode(orderData),
+    );
+
+    if (response.statusCode == 200) {
+      // Xử lý kết quả thành công
+      print('Đã tạo đơn hàng thành công');
+      return response;
+    } else {
+      // Xử lý lỗi hoặc trạng thái khác
+      print('Lỗi khi tạo đơn hàng: ${response.statusCode}');
+      print('Nội dung lỗi: ${response.body}');
+      return response;
     }
   }
 }
