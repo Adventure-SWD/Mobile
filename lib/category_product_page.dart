@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:metrofood/Model/category.dart';
 import 'package:metrofood/Model/products.dart';
 import 'package:metrofood/api/baseclient.dart';
@@ -41,27 +42,19 @@ class _CategoryProductPageState extends State<CategoryProductPage> {
     super.initState();
   }
 
+  String formatCurrency(double value) {
+    final format = NumberFormat("#,###");
+    return format.format(value);
+  }
+
   Future<void> initializeData() async {
     futureProductCategory = BaseClient().fetchProduct();
-    /*await futureProduct.then((value) {
-      setState(() {
-        listProduct = value.toList();
-      });
-    });*/
-
     await futureProductCategory.then((value) {
       setState(() {
         listProductCategory =
             value.where((product) => product.categoryId == widget.categoryId).toList();
       });
     });
-
-    /*futureProductCategory = BaseClient().fetchProductByCateId(widget.id);
-    futureProductCategory.then((value) {
-      setState(() {
-        listProductCategory = value.map((e) => e.categoryId).cast<Products>().toList();
-      });
-    });*/
   }
 
   @override
@@ -88,16 +81,6 @@ class _CategoryProductPageState extends State<CategoryProductPage> {
         padding: const EdgeInsets.all(16),
         children: [
           const SizedBox(height: 20,),
-          const Text(
-            'Category',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 15,
-              fontFamily: 'Inter',
-              fontWeight: FontWeight.w300,
-              height: 0,
-            ),
-          ),
           GridView.builder(
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
@@ -151,18 +134,15 @@ class _CategoryProductPageState extends State<CategoryProductPage> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(left: 0.0), // Add padding to align text 10px left
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  '${listProductCategory[index].price.toString()} VND',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w600,
-                                    height: 0,
-                                  ),
+                              padding: const EdgeInsets.only(bottom: 0.0), // Add padding to align text 30px left
+                              child: Text(
+                                listProductCategory[index].productName.toString(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w600,
+                                  height: 0,
                                 ),
                               ),
                             ),
@@ -170,20 +150,23 @@ class _CategoryProductPageState extends State<CategoryProductPage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 15,),
+                    const SizedBox(height: 10,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center, // Align content to the start (left)
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 0.0), // Add padding to align text 30px left
-                          child: Text(
-                            listProductCategory[index].productName.toString(),
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w300,
-                              height: 0,
+                          padding: const EdgeInsets.only(bottom: 5.0), // Add padding to align text 10px left
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              '${formatCurrency(listProductCategory[index].price)} ₫',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w400,
+                                height: 0,
+                              ),
                             ),
                           ),
                         ),
