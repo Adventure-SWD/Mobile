@@ -300,7 +300,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       SizedBox(height: 5), // Add a spacer between icon and text
                       Text(
-                        'drinks',
+                        'Drinks',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 12,
@@ -381,18 +381,15 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(left: 0.0), // Add padding to align text 10px left
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  '${listProduct[index].price.toString()} VND',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w600,
-                                    height: 0,
-                                  ),
+                              padding: const EdgeInsets.only(bottom: 0.0), // Add padding to align text 30px left
+                              child: Text(
+                                listProduct[index].productName.toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w600,
+                                  height: 0,
                                 ),
                               ),
                             ),
@@ -400,20 +397,23 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 15,),
+                    const SizedBox(height: 10,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center, // Align content to the start (left)
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 0.0), // Add padding to align text 30px left
-                          child: Text(
-                            listProduct[index].productName.toString(),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w600,
-                              height: 0,
+                          padding: const EdgeInsets.only(bottom: 5.0), // Add padding to align text 10px left
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              '${listProduct[index].price.toString()} VND',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w600,
+                                height: 0,
+                              ),
                             ),
                           ),
                         ),
