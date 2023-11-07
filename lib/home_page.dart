@@ -411,7 +411,7 @@ class _HomePageState extends State<HomePage> {
                                 color: Colors.white,
                                 fontSize: 12,
                                 fontFamily: 'Inter',
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w400,
                                 height: 0,
                               ),
                             ),
