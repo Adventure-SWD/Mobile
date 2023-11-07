@@ -406,7 +406,7 @@ class _HomePageState extends State<HomePage> {
                           child: Align(
                             alignment: Alignment.center,
                             child: Text(
-                              '${listProduct[index].price.toString()} VND',
+                              '${listProduct[index].price.toStringAsFixed(0)} VND',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 12,
