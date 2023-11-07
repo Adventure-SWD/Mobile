@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:metrofood/Model/category.dart';
 import 'package:metrofood/app_bar.dart';
 import 'package:metrofood/api/baseclient.dart';
+import 'package:metrofood/category_product_page.dart';
 
 class CategoriesPage extends StatefulWidget{
   static const routeName = '/categories-page';
@@ -13,6 +14,7 @@ class CategoriesPage extends StatefulWidget{
 class _CategoriesPageState extends State<CategoriesPage> {
   late Future<List<Categories>> futureCategory;
   List<String> listCategory = [];
+  List<String> listCategoryId = [];
 
   @override
   void initState() {
@@ -25,6 +27,12 @@ class _CategoriesPageState extends State<CategoriesPage> {
     futureCategory.then((value) {
       setState(() {
         listCategory = value.map((e) => e.categoryName).toList();
+      });
+    });
+
+    futureCategory.then((value) {
+      setState(() {
+        listCategoryId = value.map((e) => e.id).toList();
       });
     });
   }
@@ -158,31 +166,42 @@ class _CategoriesPageState extends State<CategoriesPage> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Container(
-                          width: 80,
-                          height: 80,
-                          decoration: const ShapeDecoration(
-                            color: Color(0xFFE6E6E6),
-                            shape: OvalBorder(),
+                  child: InkWell( // Wrap the Column in InkWell
+                    onTap: () {
+                      // Navigate to the settings page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CategoryProductPage(categoryId: "${listCategoryId[index]}"),
+                        ),
+                      );
+                    },
+                    child: Column( // Ensure the Column is the child of InkWell
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Container(
+                            width: 80,
+                            height: 80,
+                            decoration: const ShapeDecoration(
+                              color: Color(0xFFE6E6E6),
+                              shape: OvalBorder(),
+                            ),
                           ),
                         ),
-                      ),
-                      Text(
-                        listCategory[index], // Sử dụng dữ liệu từ danh sách
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w700,
-                          height: 0,
-                        ),
-                      )
-                    ],
+                        Text(
+                          listCategory[index], // Sử dụng dữ liệu từ danh sách
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w700,
+                            height: 0,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 );
               },

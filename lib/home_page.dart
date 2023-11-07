@@ -159,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CategoryProductPage(categoryId: "${listProduct[7].categoryId}"),
+                      builder: (context) => CategoryProductPage(categoryId: "${listCategory[6].id}"),
                     ),
                   );
                 },
@@ -186,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CategoryProductPage(categoryId: "${listProduct[2].categoryId}"),
+                      builder: (context) => CategoryProductPage(categoryId: "${listCategory[5].id}"),
                     ),
                   );
                 },
@@ -213,7 +213,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CategoryProductPage(categoryId: "${listProduct[3].categoryId}"),
+                      builder: (context) => CategoryProductPage(categoryId: "${listCategory[1].id}"),
                     ),
                   );
                 },
@@ -240,7 +240,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CategoryProductPage(categoryId: "${listProduct[4].categoryId}"),
+                      builder: (context) => CategoryProductPage(categoryId: "${listCategory[4].id}"),
                     ),
                   );
                 },
