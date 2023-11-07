@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:metrofood/Model/category.dart';
 import 'package:metrofood/Model/products.dart';
 import 'package:metrofood/api/baseclient.dart';
@@ -53,6 +54,11 @@ class _HomePageState extends State<HomePage> {
         listCategory = value.toList();
       });
     });
+  }
+
+  String formatCurrency(double value) {
+    final format = NumberFormat("#,###");
+    return format.format(value);
   }
 
   void startImageSlider() {
@@ -406,7 +412,7 @@ class _HomePageState extends State<HomePage> {
                           child: Align(
                             alignment: Alignment.center,
                             child: Text(
-                              '${listProduct[index].price.toStringAsFixed(0)} VND',
+                              '${formatCurrency(listProduct[index].price)} ₫',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 12,

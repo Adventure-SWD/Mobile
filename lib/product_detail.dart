@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:metrofood/Model/products.dart';
 import 'package:metrofood/api/baseclient.dart';
 
@@ -22,6 +23,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   void initState() {
     initializedData();
     super.initState();
+  }
+
+  String formatCurrency(double value) {
+    final format = NumberFormat("#,###");
+    return format.format(value);
   }
 
   Future<void> initializedData() async {
@@ -98,7 +104,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "Giá bán: ${product.price} VND",
+                        "Giá bán: ${formatCurrency(product.price)} ₫",
                         style: Theme.of(context).textTheme.subtitle1,
                       ),
                       const SizedBox(height: 8),

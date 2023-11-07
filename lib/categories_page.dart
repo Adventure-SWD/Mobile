@@ -41,6 +41,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
   Widget build(BuildContext context) {
     if (listCategory == null || listCategory.isEmpty) {
       return Scaffold(
+        appBar: AppBar(
+          title: const Text('Danh mục sản phẩm'),
+        ),
         body: Stack(
           children: [
             Container(
@@ -59,90 +62,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Container(
-            width: 331,
-            height: 63,
-            decoration: ShapeDecoration(
-              color: const Color(0xFF297373),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const SizedBox(width: 5),
-                const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Ben Thanh',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w600,
-                        height: 0,
-                      ),
-                    ),
-                    Text(
-                      '9h15',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500,
-                        height: 0,
-                      ),
-                    )
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Transform(
-                      transform: Matrix4.identity()..translate(0.0, 0.0),
-                      child: Container(
-                        width: 50,
-                        height: 20,
-                        child: Icon(
-                          Icons.arrow_forward,
-                          color: Colors.white,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Suoi Tien',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w600,
-                        height: 0,
-                      ),
-                    ),
-                    Text(
-                      '9h45',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500,
-                        height: 0,
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(width: 5),
-              ],
-            ),
-          ),
-          const SizedBox(height: 40),
+          const SizedBox(height: 5),
           SingleChildScrollView(
             child: Container (
             child: GridView.builder(
@@ -187,6 +107,13 @@ class _CategoriesPageState extends State<CategoriesPage> {
                             decoration: const ShapeDecoration(
                               color: Color(0xFFE6E6E6),
                               shape: OvalBorder(),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.lunch_dining_sharp,
+                                color: Colors.black,
+                                size: 50,
+                              ),
                             ),
                           ),
                         ),

@@ -81,7 +81,9 @@ class _CategoryProductPageState extends State<CategoryProductPage> {
       );
     }
     return Scaffold(
-      //appBar: CustomAppBar(),
+      appBar: AppBar(
+        title: const Text('Danh mục sản phẩm'),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
