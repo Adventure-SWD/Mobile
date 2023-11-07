@@ -21,8 +21,6 @@ class _HomePageState extends State<HomePage> {
   late Future<List<Categories>> futureCategory;
   late List<Categories> listCategory = [];
 
-  late Future<List<Products>> futureProductCategory;
-  late List<Products> listProductCategory = [];
 
   late Future<List<Products>> futureProduct;
   late List<Products> listProduct = [];
@@ -161,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CategoryProductPage(categoryId: "${listCategory[0].categoryName}"),
+                      builder: (context) => CategoryProductPage(categoryId: "${listProduct[7].categoryId}"),
                     ),
                   );
                 },
@@ -188,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CategoryProductPage(categoryId: "${listCategory[1].categoryName}"),
+                      builder: (context) => CategoryProductPage(categoryId: "${listProduct[2].categoryId}"),
                     ),
                   );
                 },
@@ -215,7 +213,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CategoryProductPage(categoryId: "${listCategory[2].categoryName}"),
+                      builder: (context) => CategoryProductPage(categoryId: "${listProduct[3].categoryId}"),
                     ),
                   );
                 },
@@ -242,7 +240,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CategoryProductPage(categoryId: "${listCategory[3].categoryName}"),
+                      builder: (context) => CategoryProductPage(categoryId: "${listProduct[4].categoryId}"),
                     ),
                   );
                 },
