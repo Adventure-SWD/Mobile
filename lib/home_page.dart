@@ -170,13 +170,26 @@ class _HomePageState extends State<HomePage> {
                     color: Color(0xFFFF8552),
                     shape: OvalBorder(),
                   ),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Icon(
-                      Icons.lunch_dining,
-                      color: Colors.white,
-                      size: 30,
-                    ),
+                  child: const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.lunch_dining,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      SizedBox(height: 5), // Add a spacer between icon and text
+                      Text(
+                        'Bread',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w600,
+                          height: 0,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -197,13 +210,26 @@ class _HomePageState extends State<HomePage> {
                     color: Color(0xFFFF8552),
                     shape: OvalBorder(),
                   ),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Icon(
-                      Icons.icecream,
-                      color: Colors.white,
-                      size: 30,
-                    ),
+                  child: const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.icecream,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      SizedBox(height: 5), // Add a spacer between icon and text
+                      Text(
+                        'Candy',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w600,
+                          height: 0,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -224,13 +250,26 @@ class _HomePageState extends State<HomePage> {
                     color: Color(0xFFFF8552),
                     shape: OvalBorder(),
                   ),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Icon(
-                      Icons.fastfood,
-                      color: Colors.white,
-                      size: 30,
-                    ),
+                  child: const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.food_bank,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      SizedBox(height: 5), // Add a spacer between icon and text
+                      Text(
+                        'Food',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w600,
+                          height: 0,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -251,13 +290,26 @@ class _HomePageState extends State<HomePage> {
                     color: Color(0xFFFF8552),
                     shape: OvalBorder(),
                   ),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Icon(
-                      Icons.liquor,
-                      color: Colors.white,
-                      size: 30,
-                    ),
+                  child: const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.liquor,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      SizedBox(height: 5), // Add a spacer between icon and text
+                      Text(
+                        'drinks',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w600,
+                          height: 0,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
