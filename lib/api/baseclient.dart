@@ -7,6 +7,7 @@ import 'package:metrofood/Model/album.dart';
 import 'package:metrofood/Model/category.dart';
 import 'package:metrofood/Model/customer.dart';
 import 'package:metrofood/Model/menu_product.dart';
+import 'package:metrofood/Model/menu_product_new.dart';
 import 'package:metrofood/Model/order.dart';
 import 'package:metrofood/Model/products.dart';
 import 'package:metrofood/Model/route.dart';
@@ -16,7 +17,7 @@ import 'package:metrofood/Model/store_menu.dart';
 import 'package:metrofood/Model/trip.dart';
 import 'package:metrofood/Model/user.dart';
 
-const String baseUrl = 'http://13.210.56.232/api/v1';
+const String baseUrl = 'https://13.210.56.232/api/v1';
 
 class BaseClient {
   var client = http.Client();
@@ -78,7 +79,17 @@ class BaseClient {
       throw Exception(response.statusCode);
     }
   }
+  Future<MenuProductNew> fetchMenuProductsNewByMenuId(String id) async {
+    final response = await http
+        .get(Uri.parse('${baseUrl}/menu-products/stations/${id}'));
 
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+      return MenuProductNew.fromJson(jsonData);
+    } else {
+      throw Exception('Failed to load data ${response.statusCode}');
+    }
+  }
   Future<List<Routes>> fetchRoute() async {
     final response =
         await http.get(Uri.parse('${baseUrl}/route'));

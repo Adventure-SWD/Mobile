@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -6,6 +5,7 @@ import 'package:metrofood/Model/customer.dart';
 import 'package:metrofood/api/baseclient.dart';
 import 'package:metrofood/edit_profile.dart';
 import 'package:metrofood/login_page.dart';
+import 'package:metrofood/order_page.dart';
 import 'package:metrofood/setting_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,7 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> initializedData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? id = prefs.getString('userId');
-    if(id != null) {
+    if (id != null) {
       futureCustomer = BaseClient().fetchCustomerById(id);
     }
     await futureCustomer.then((value) {
@@ -58,7 +58,8 @@ class _ProfilePageState extends State<ProfilePage> {
     void _handleLogout() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.remove('userId');
-      final GoogleSignInAccount? googleSignInAccount = await GoogleSignIn().signOut();
+      final GoogleSignInAccount? googleSignInAccount =
+          await GoogleSignIn().signOut();
       if (googleSignInAccount != null) {
         await FirebaseAuth.instance.signOut();
         // Đăng xuất khỏi Firebase và Google
@@ -66,6 +67,7 @@ class _ProfilePageState extends State<ProfilePage> {
       Navigator.pushNamedAndRemoveUntil(
           context, '/login-page', ModalRoute.withName('/login-page'));
     }
+
     // if(customer.customerId.isEmpty || customer.customerId == null) {
     //   return Scaffold(
     //     body: Stack(
@@ -114,7 +116,9 @@ class _ProfilePageState extends State<ProfilePage> {
             CustomListTile(
               icon: Icons.person,
               title: 'User name',
-              subtitle: customer.customerData.firstName + " " + customer.customerData.lastName,
+              subtitle: customer.customerData.firstName +
+                  " " +
+                  customer.customerData.lastName,
             ),
 
             // CustomListTile to display Email
@@ -138,9 +142,19 @@ class _ProfilePageState extends State<ProfilePage> {
             // ),
 
             // CustomListTile to display Purchase History
-            const CustomListTile(
+            CustomListTile(
               icon: Icons.history,
               title: 'Purchase History',
+              onTap: () {
+                // Navigate to the settings page
+                // Navigator.pushNamed(context, '/order-page');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const TransactionHistoryPage(),
+                  ),
+                );
+              },
             ),
 
             CustomListTile(
@@ -173,7 +187,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
 
             // Log out
-             CustomListTile(
+            CustomListTile(
               icon: Icons.logout,
               title: 'Log out',
               onTap: () {
@@ -186,8 +200,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
-
-
 
 class CustomListTile extends StatelessWidget {
   final IconData icon;

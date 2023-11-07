@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:metrofood/Model/order.dart';
+import 'package:metrofood/api/baseclient.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Import Orders class and ordersFromJson function here
 
 class TransactionHistoryPage extends StatefulWidget {
+  static const routeName = '/order-page';
   const TransactionHistoryPage({Key? key}) : super(key: key);
 
   @override
@@ -13,11 +16,23 @@ class TransactionHistoryPage extends StatefulWidget {
 class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
   late Future<List<Orders>> futureOrder;
   late List<Orders> ordersList = [];
+  late String userId;
 
   @override
   void initState() {
-    
+    super.initState();
+    initData();
   }
+  void initData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userId = prefs.getString('userId')!;
+    BaseClient().fetchOrderByUserId(userId).then((value) {
+      setState(() {
+        ordersList = value.toList();
+      });
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {

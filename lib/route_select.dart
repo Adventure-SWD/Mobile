@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:metrofood/Model/album.dart';
 import 'package:metrofood/Model/cart.dart';
 import 'package:metrofood/Model/menu_product.dart';
+import 'package:metrofood/Model/menu_product_new.dart';
 import 'package:metrofood/Model/products.dart';
 import 'package:metrofood/Model/route.dart';
 import 'package:metrofood/Model/station.dart';
@@ -28,6 +29,8 @@ class _RouteSelectPage extends State<RouteSelectPage> {
   late Future<List<StationTrips>> futureStationTrips;
   late Future<List<StoreMenus>> futureStoreMenu;
   late Future<List<MenuProducts>> futureMenuProduct;
+  late Future<MenuProductNew> futureMenuProductNew;
+  late MenuProductNew menuProductNew = MenuProductNew.empty();
   late List<MenuProducts> listMenuProduct = [];
   late List<StoreMenus> listStoreMenu = [];
   late List<Routes> listRoute = [];
@@ -43,8 +46,16 @@ class _RouteSelectPage extends State<RouteSelectPage> {
   void initState() {
     initializeData();
     super.initState();
-  }
+    initProduct();
 
+  }
+  void initProduct() async {
+    futureMenuProduct = BaseClient()
+        .fetchMenuProducts();
+    await futureMenuProduct.then((value) {
+    listMenuProduct = value.toList();
+    });
+  }
   void filterTripsByRouteId(String routeId) {
     futureTrip.then((value) {
       listTrip = value.where((trip) => trip.routeId == routeId).toList();
@@ -64,15 +75,14 @@ class _RouteSelectPage extends State<RouteSelectPage> {
       // await futureStoreMenu.then((value) {
       //   listStoreMenu = value.toList();
       // });
-      futureMenuProduct = BaseClient()
-          .fetchMenuProductsByMenuId(id);
-      // .fetchMenuProducts();
-      await futureMenuProduct.then((value) {
-        listMenuProduct = value.toList();
+      futureMenuProductNew = BaseClient().fetchMenuProductsNewByMenuId(id);
+      await futureMenuProductNew.then((value) {
+        menuProductNew = value;
       });
       setState(() {
         isLoading = false;
       });
+
     } catch (error) {
       print(error);
     }
@@ -216,7 +226,7 @@ class _RouteSelectPage extends State<RouteSelectPage> {
               crossAxisSpacing: 16, // Khoảng cách ngang giữa các cột
               mainAxisSpacing: 16, // Khoảng cách dọc giữa các hàng
             ),
-            itemCount: listMenuProduct.length,
+            itemCount: menuProductNew.menuProductData.length,
             // Số lượng phần tử trong danh sách
             itemBuilder: (context, index) {
               return Container(
@@ -237,13 +247,13 @@ class _RouteSelectPage extends State<RouteSelectPage> {
                       height: 60,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: NetworkImage(listMenuProduct[index].productData.image),
+                          image: NetworkImage(menuProductNew.menuProductData[index].productData.image),
                           fit: BoxFit.fill,
                         ),
                       ),
                     ),
                     Text(
-                      listMenuProduct[index].productData.productName,
+                      menuProductNew.menuProductData[index].productData.productName,
                       // Sử dụng dữ liệu từ danh sách
                       style: TextStyle(
                         color: Colors.white,
@@ -254,7 +264,7 @@ class _RouteSelectPage extends State<RouteSelectPage> {
                       ),
                     ),
                     Text(
-                      '${listMenuProduct[index].priceOfProductBelongToTimeService.toString()} VND',
+                      '${menuProductNew.menuProductData[index].priceOfProductBelongToTimeService.toString()} VND',
                       // Sử dụng dữ liệu từ danh sách
                       style: TextStyle(
                         color: Colors.white,
@@ -265,8 +275,11 @@ class _RouteSelectPage extends State<RouteSelectPage> {
                       ),
                     ),
                     ElevatedButton(
-                      onPressed: () {
-                          cartProvider.addToCart(listMenuProduct[index]);
+                      onPressed: () async {
+                          cartProvider.addToCart(listMenuProduct.where((element) => element.productId
+                          == menuProductNew.menuProductData[index].productId ).first);
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          await prefs.setString("storeId", menuProductNew.menuProductData[1].storeData.id);
                           setState(() {});
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -403,6 +416,5 @@ class _RouteSelectPage extends State<RouteSelectPage> {
   void getTripId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("tripId", _selectedTrip!);
-    await prefs.setString("storeId", _selectedStation!);
   }
 }
