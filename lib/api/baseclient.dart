@@ -17,7 +17,7 @@ import 'package:metrofood/Model/store_menu.dart';
 import 'package:metrofood/Model/trip.dart';
 import 'package:metrofood/Model/user.dart';
 
-const String baseUrl = 'https://13.210.56.232/api/v1';
+const String baseUrl = 'http://13.210.56.232/api/v1';
 
 class BaseClient {
   var client = http.Client();
