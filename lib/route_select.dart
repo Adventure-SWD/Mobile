@@ -66,7 +66,7 @@ class _RouteSelectPage extends State<RouteSelectPage> {
       futureMenuProduct = BaseClient()
           .fetchMenuProductsByMenuId(listStoreMenu.firstOrNull!.menuId);
       await futureMenuProduct.then((value) {
-          listMenuProduct = value.toList();
+        listMenuProduct = value.toList();
       });
       setState(() {
         isLoading = false;
@@ -75,6 +75,7 @@ class _RouteSelectPage extends State<RouteSelectPage> {
       print(error);
     }
   }
+
   Future<Products> addProductClicked(String id) async {
     try {
       Products product = await BaseClient().fetchProductById(id);
@@ -84,6 +85,7 @@ class _RouteSelectPage extends State<RouteSelectPage> {
       throw error; // Nếu có lỗi, bạn có thể ném ngoại lệ hoặc xử lý theo ý của bạn
     }
   }
+
   Future<void> initializeData() async {
     try {
       futureAlbum = BaseClient().fetchAlbum();
@@ -122,6 +124,7 @@ class _RouteSelectPage extends State<RouteSelectPage> {
   @override
   Widget build(BuildContext context) {
     final cartProvider = context.read<CartProvider>();
+    final hasItemsInCart = cartProvider.cart.items.isNotEmpty;
     if (isLoading) {
       return Center(
         child: CircularProgressIndicator(),
@@ -172,6 +175,13 @@ class _RouteSelectPage extends State<RouteSelectPage> {
                           border: Border.all(color: Colors.grey),
                           borderRadius: BorderRadius.circular(8.0)),
                       child: _dropDownStation(underline: Container())),
+                  if (hasItemsInCart)
+                    ElevatedButton(
+                      onPressed: () {
+                        // Mở giỏ hàng
+                      },
+                      child: const Text('Mở giỏ hàng'),
+                    ),
                   ElevatedButton(
                     onPressed: () {
                       // var _response = BaseClient()
@@ -241,22 +251,28 @@ class _RouteSelectPage extends State<RouteSelectPage> {
                         height: 0,
                       ),
                     ),
-                    ElevatedButton(onPressed: () {
-                      Future<Products> productFuture = addProductClicked(listMenuProduct[index].productId);
-                      productFuture.then((product) {
-                        cartProvider.addToCart(product);
-                        // Cập nhật giao diện người dùng nếu cần thiết
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Sản phẩm đã được thêm vào giỏ hàng.'),
-                          ),
-                        );
-                      }).catchError((error) {
-                        print(error);
-                        // Xử lý lỗi nếu có
-                      });
-                    }
-                    , child: const Text('Thêm vào giỏ hàng'),
+                    ElevatedButton(
+                      onPressed: () {
+                        Future<Products> productFuture =
+                            addProductClicked(listMenuProduct[index].productId);
+                        productFuture.then((product) {
+                          product.price = listMenuProduct[index]
+                              .priceOfProductBelongToTimeService;
+                          cartProvider.addToCart(product);
+                          setState(() {});
+                          // Cập nhật giao diện người dùng nếu cần thiết
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content:
+                                  Text('Sản phẩm đã được thêm vào giỏ hàng.'),
+                            ),
+                          );
+                        }).catchError((error) {
+                          print(error);
+                          // Xử lý lỗi nếu có
+                        });
+                      },
+                      child: const Text('Thêm vào giỏ hàng'),
                     )
                   ],
                 ),
