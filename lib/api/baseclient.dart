@@ -238,6 +238,22 @@ class BaseClient {
       throw Exception('Failed to load data');
     }
   }
+  Future<List<Products>> fetchProductByCateId(String categoryId) async {
+    final response = await http.get(
+        Uri.parse('${baseUrl}/products?categoryID=$categoryId'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      final List result = json.decode(response.body);
+      return result.map((e) => Products.fromJson(e)).toList();
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load product');
+    }
+  }
+
   Future<Album> fetchAlbum() async {
     final response = await http
         .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:metrofood/Model/category.dart';
 import 'package:metrofood/Model/products.dart';
 import 'package:metrofood/api/baseclient.dart';
+import 'package:metrofood/category_product_page.dart';
 import 'dart:async';
 
 import 'package:metrofood/product_detail.dart';
@@ -15,6 +17,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // test cate
+  late Future<List<Categories>> futureCategory;
+  late List<Categories> listCategory = [];
+
+
   late Future<List<Products>> futureProduct;
   late List<Products> listProduct = [];
   final List<String> imageUrls = [
@@ -37,6 +44,13 @@ class _HomePageState extends State<HomePage> {
     await futureProduct.then((value) {
       setState(() {
         listProduct = value.toList();
+      });
+    });
+
+    futureCategory = BaseClient().fetchCategory();
+    await futureCategory.then((value) {
+      setState(() {
+        listCategory = value.toList();
       });
     });
   }
@@ -139,70 +153,166 @@ class _HomePageState extends State<HomePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                width: 60,
-                height: 60,
-                decoration: const ShapeDecoration(
-                  color: Color(0xFFFF8552),
-                  shape: OvalBorder(),
-                ),
-                child: Align(
-                    alignment: Alignment.center,
-                    child: Icon(
-                      Icons.lunch_dining,
-                      color: Colors.white,
-                      size: 30,
+              InkWell(
+                onTap: () {
+                  // Navigate to the settings page
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CategoryProductPage(categoryId: "${listCategory[6].id}"),
                     ),
-                ),
-              ),
-              Container(
-                width: 60,
-                height: 60,
-                decoration: const ShapeDecoration(
-                  color: Color(0xFFFF8552),
-                  shape: OvalBorder(),
-                ),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Icon(
-                    Icons.icecream,
-                    color: Colors.white,
-                    size: 30,
+                  );
+                },
+                child: Container(
+                  width: 60,
+                  height: 60,
+                  decoration: const ShapeDecoration(
+                    color: Color(0xFFFF8552),
+                    shape: OvalBorder(),
+                  ),
+                  child: const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.lunch_dining,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      SizedBox(height: 5), // Add a spacer between icon and text
+                      Text(
+                        'Bread',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w600,
+                          height: 0,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              Container(
-                width: 60,
-                height: 60,
-                decoration: const ShapeDecoration(
-                  color: Color(0xFFFF8552),
-                  shape: OvalBorder(),
-                ),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Icon(
-                    Icons.fastfood,
-                    color: Colors.white,
-                    size: 30,
+              InkWell(
+                onTap: () {
+                  // Navigate to the settings page
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CategoryProductPage(categoryId: "${listCategory[5].id}"),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: 60,
+                  height: 60,
+                  decoration: const ShapeDecoration(
+                    color: Color(0xFFFF8552),
+                    shape: OvalBorder(),
+                  ),
+                  child: const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.icecream,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      SizedBox(height: 5), // Add a spacer between icon and text
+                      Text(
+                        'Candy',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w600,
+                          height: 0,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              Container(
-                width: 60,
-                height: 60,
-                decoration: const ShapeDecoration(
-                  color: Color(0xFFFF8552),
-                  shape: OvalBorder(),
-                ),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Icon(
-                    Icons.liquor,
-                    color: Colors.white,
-                    size: 30,
+              InkWell(
+                onTap: () {
+                  // Navigate to the settings page
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CategoryProductPage(categoryId: "${listCategory[1].id}"),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: 60,
+                  height: 60,
+                  decoration: const ShapeDecoration(
+                    color: Color(0xFFFF8552),
+                    shape: OvalBorder(),
+                  ),
+                  child: const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.food_bank,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      SizedBox(height: 5), // Add a spacer between icon and text
+                      Text(
+                        'Food',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w600,
+                          height: 0,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              )
+              ),
+              InkWell(
+                onTap: () {
+                  // Navigate to the settings page
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CategoryProductPage(categoryId: "${listCategory[4].id}"),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: 60,
+                  height: 60,
+                  decoration: const ShapeDecoration(
+                    color: Color(0xFFFF8552),
+                    shape: OvalBorder(),
+                  ),
+                  child: const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.liquor,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      SizedBox(height: 5), // Add a spacer between icon and text
+                      Text(
+                        'Drinks',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w600,
+                          height: 0,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 40,),
@@ -217,423 +327,106 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           const SizedBox(height: 10,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      // Navigate to the settings page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProductDetailPage(id: "${listProduct[0].id}"),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      width: 150,
-                      height: 150,
-                      decoration: const BoxDecoration(color: Color(0xFFFF8552)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 100,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(listProduct[0].image),
-                                fit: BoxFit.fill,
+
+          GridView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // Số cột
+              crossAxisSpacing: 20, // Khoảng cách ngang giữa các cột
+              mainAxisSpacing: 30, // Khoảng cách dọc giữa các hàng
+            ),
+            itemCount: 6,
+            // Số lượng phần tử trong danh sách
+            itemBuilder: (context, index) {
+              return Container(
+                padding: const EdgeInsets.all(0),
+                width: 160,
+                height: 160,
+                decoration: ShapeDecoration(
+                  color: Color(0xFFFF8552),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        // Navigate to the settings page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductDetailPage(id: "${listProduct[index].id}"),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 160,
+                        height: 125,
+                        decoration: const BoxDecoration(color: Color(0xFFFF8552)),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: 160,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage(listProduct[index].image),
+                                  fit: BoxFit.fill,
+                                ),
                               ),
                             ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomLeft,
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 0.0), // Add padding to align text 30px left
+                              child: Text(
+                                listProduct[index].productName.toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w600,
+                                  height: 0,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center, // Align content to the start (left)
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 5.0), // Add padding to align text 10px left
+                          child: Align(
+                            alignment: Alignment.center,
                             child: Text(
-                              '${listProduct[0].price.toString()} VND',
+                              '${listProduct[index].price.toStringAsFixed(0)} VND',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 12,
                                 fontFamily: 'Inter',
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w400,
                                 height: 0,
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(height: 10,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        listProduct[0].productName.toString(),
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w300,
-                          height: 0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      // Navigate to the settings page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>  ProductDetailPage(id: "${listProduct[1].id}"),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      width: 150,
-                      height: 150,
-                      decoration: const BoxDecoration(color: Color(0xFFFF8552)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 100,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(listProduct[1].image),
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              '${listProduct[1].price.toString()} VND',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w600,
-                                height: 0,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        listProduct[1].productName.toString(),
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w300,
-                          height: 0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 10,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      // Navigate to the settings page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProductDetailPage(id: "${listProduct[2].id}"),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      width: 150,
-                      height: 150,
-                      decoration: const BoxDecoration(color: Color(0xFFFF8552)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 100,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(listProduct[2].image),
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              '${listProduct[2].price.toString()} VND',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w600,
-                                height: 0,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        listProduct[2].productName.toString(),
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w300,
-                          height: 0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      // Navigate to the settings page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>  ProductDetailPage(id: "${listProduct[3].id}"),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      width: 150,
-                      height: 150,
-                      decoration: const BoxDecoration(color: Color(0xFFFF8552)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 100,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(listProduct[3].image),
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              '${listProduct[3].price.toString()} VND',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w600,
-                                height: 0,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        listProduct[3].productName.toString(),
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w300,
-                          height: 0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 10,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      // Navigate to the settings page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>  ProductDetailPage(id: "${listProduct[4].id}"),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      width: 150,
-                      height: 150,
-                      decoration: const BoxDecoration(color: Color(0xFFFF8552)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 100,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(listProduct[4].image),
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ),
-                           Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              '${listProduct[4].price.toString()} VND',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w600,
-                                height: 0,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        listProduct[4].productName.toString(),
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w300,
-                          height: 0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      // Navigate to the settings page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>  ProductDetailPage(id: "${listProduct[5].id}"),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      width: 150,
-                      height: 150,
-                      decoration: const BoxDecoration(color: Color(0xFFFF8552)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 100,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(listProduct[5].image),
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ),
-                           Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              '${listProduct[5].price.toString()} VND',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w600,
-                                height: 0,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        listProduct[5].productName.toString(),
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w300,
-                          height: 0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              );
+            },
           ),
         ],
       ),
     );
   }
-
 }
 
