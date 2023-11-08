@@ -45,16 +45,11 @@ class _RouteSelectPage extends State<RouteSelectPage> {
   @override
   void initState() {
     initializeData();
-    super.initState();
     initProduct();
-
+    super.initState();
   }
   void initProduct() async {
-    futureMenuProduct = BaseClient()
-        .fetchMenuProducts();
-    await futureMenuProduct.then((value) {
-    listMenuProduct = value.toList();
-    });
+
   }
   void filterTripsByRouteId(String routeId) {
     futureTrip.then((value) {
@@ -113,6 +108,16 @@ class _RouteSelectPage extends State<RouteSelectPage> {
       futureTrip = BaseClient().fetchTrip();
       futureStationTrips = BaseClient().fetchStationTrips();
       futureStation = BaseClient().fetchStation();
+      futureMenuProduct = BaseClient()
+          .fetchMenuProducts();
+      // await futureMenuProduct.then((value) {
+      //   final testmenu = value.toList();
+      // });
+      // await futureMenuProduct.then((value) {
+      //   setState(() {
+      //     listMenuProduct = value.toList();
+      //   });
+      // });
       await futureRoute.then((value) {
         setState(() {
           listRoute = value.toList();
@@ -284,10 +289,9 @@ class _RouteSelectPage extends State<RouteSelectPage> {
                     ),
                     ElevatedButton(
                       onPressed: () async {
-                          cartProvider.addToCart(listMenuProduct.where((element) => element.productId
-                          == menuProductNew.menuProductData[index].productId ).first);
+                          cartProvider.addToCart(menuProductNew.menuProductData[index]);
                           SharedPreferences prefs = await SharedPreferences.getInstance();
-                          await prefs.setString("storeId", menuProductNew.menuProductData[1].storeData.id);
+                          await prefs.setString("storeId", menuProductNew.menuProductData[0].storeData.id);
                           setState(() {});
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(

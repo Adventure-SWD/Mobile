@@ -87,7 +87,7 @@ class ProductData {
   String productName;
   String productDescription;
   String image;
-  int price;
+  double price;
   DateTime created;
 
   ProductData({
@@ -104,7 +104,7 @@ class ProductData {
     productName: json["productName"],
     productDescription: json["productDescription"],
     image: json["image"],
-    price: json["price"],
+    price: (json["price"] as int).toDouble(),
     created: DateTime.parse(json["created"]),
   );
 
@@ -122,7 +122,7 @@ MenuProducts getDefaultMenuProducts() {
     id: 'default',
     menuId: 'default',
     productId: 'default',
-    priceOfProductBelongToTimeService: 0.0,
+    priceOfProductBelongToTimeService: 0,
     created: DateTime.now(),
     menuData: getDefaultMenuData(),
     productData: getDefaultProductData(),

@@ -80,6 +80,7 @@ class MenuProductDatum {
   dynamic menuData;
   ProductData productData;
   StoreData storeData;
+  int quantity;
 
   MenuProductDatum({
     required this.id,
@@ -90,7 +91,21 @@ class MenuProductDatum {
     required this.menuData,
     required this.productData,
     required this.storeData,
+    this.quantity = 1,
   });
+
+  factory MenuProductDatum.empty() {
+    return MenuProductDatum(
+      id: 'default',
+      menuId: 'default',
+      productId: 'default',
+      priceOfProductBelongToTimeService: 0.0,
+      created: DateTime.now(),
+      menuData: MenuData.empty(),
+      productData: ProductData.empty(),
+      storeData: StoreData.empty(),
+    );
+  }
 
   factory MenuProductDatum.fromJson(Map<String, dynamic> json) => MenuProductDatum(
     id: json["id"],
@@ -132,6 +147,17 @@ class ProductData {
     required this.created,
   });
 
+  factory ProductData.empty() {
+    return ProductData(
+      categoryId: '',
+      productName: '',
+      productDescription: '',
+      image: '',
+      price: 0,
+      created: DateTime.now(),
+    );
+  }
+
   factory ProductData.fromJson(Map<String, dynamic> json) => ProductData(
     categoryId: json["categoryID"],
     productName: json["productName"],
@@ -167,6 +193,17 @@ class StoreData {
     required this.storeCloseTime,
     required this.created,
   });
+
+  factory StoreData.empty() {
+    return StoreData(
+      id: '',
+      storeName: StoreName.METRO_PICK_UP_5, // Chọn giá trị mặc định cho storeName tại đây
+      storeLocation: StoreLocation.SUI_TIN, // Chọn giá trị mặc định cho storeLocation tại đây
+      storeOpenTime: '',
+      storeCloseTime: '',
+      created: DateTime.now(),
+    );
+  }
 
   factory StoreData.fromJson(Map<String, dynamic> json) => StoreData(
     id: json["id"],

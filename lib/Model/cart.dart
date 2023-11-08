@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:metrofood/Model/menu_product.dart';
+import 'package:metrofood/Model/menu_product_new.dart';
 import 'package:metrofood/Model/products.dart';
 
 class Cart {
-  List<MenuProducts> items = [];
+  List<MenuProductDatum> items = [];
 }
 class CartProvider extends ChangeNotifier {
   Cart _cart = Cart();
 
   Cart get cart => _cart;
 
-  void addToCart(MenuProducts product) {
+  void addToCart(MenuProductDatum product) {
     final existingProduct = _cart.items.firstWhere((item) => item.productId == product.productId, orElse: () {
-      return getDefaultMenuProducts();
+      return MenuProductDatum.empty();
     });
-    if (existingProduct.id != 'default') {
+    if (existingProduct.productId != 'default') {
       updateQuantity(existingProduct, existingProduct.quantity + 1);
     } else {
       product.quantity = 1;
@@ -23,7 +24,7 @@ class CartProvider extends ChangeNotifier {
     }
   }
 
-  void removeFromCart(MenuProducts product) {
+  void removeFromCart(MenuProductDatum product) {
     _cart.items.remove(product);
     notifyListeners();
   }
@@ -33,9 +34,9 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateQuantity(MenuProducts product, int newQuantity) {
+  void updateQuantity(MenuProductDatum product, int newQuantity) {
     final cartItem = _cart.items.firstWhere((item) => item.id == product.id, orElse: () {
-      return getDefaultMenuProducts();
+      return MenuProductDatum.empty();
     });
     if (cartItem != null) {
       cartItem.quantity = newQuantity;
@@ -45,7 +46,7 @@ class CartProvider extends ChangeNotifier {
 
   double getTotalPrice() {
     double totalPrice = 0.0;
-    for (MenuProducts product in _cart.items) {
+    for (MenuProductDatum product in _cart.items) {
       totalPrice += product.priceOfProductBelongToTimeService * product.quantity;
     }
     return totalPrice;

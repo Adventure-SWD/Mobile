@@ -272,7 +272,7 @@ class BaseClient {
     required String applicationUserID,
     required String tripId,
     required String storeId,
-    required List<MenuProducts> products,
+    required List<MenuProductDatum> products,
   }) async {
     final apiUrl = '${baseUrl}/orders';
     final headers = <String, String>{
