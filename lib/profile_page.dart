@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:intl/intl.dart';
 import 'package:metrofood/Model/customer.dart';
 import 'package:metrofood/api/baseclient.dart';
 import 'package:metrofood/edit_profile.dart';
@@ -22,9 +23,10 @@ class _ProfilePageState extends State<ProfilePage> {
   late Customer customer = Customer.empty();
   late String username = "";
   late String email = "";
+  late String wallet = "";
   final String userImage =
       'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80';
-
+  bool isWalletHidden = true;
   @override
   void initState() {
     initializedData();
@@ -41,10 +43,15 @@ class _ProfilePageState extends State<ProfilePage> {
     await futureCustomer.then((value) {
       setState(() {
         customer = value;
+        if(customer.customerData.wallet != null)
+        wallet = formatCurrency(value.customerData.wallet!);
       });
     });
   }
-
+  String formatCurrency(int value) {
+    final format = NumberFormat("#,###");
+    return format.format(value);
+  }
   void getInformation() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -55,6 +62,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    String walletBalance = isWalletHidden ? '*******' : '${wallet}';
     void _handleLogout() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.remove('userId');
@@ -127,7 +135,25 @@ class _ProfilePageState extends State<ProfilePage> {
               title: 'Email',
               subtitle: customer.customerData.email,
             ),
-
+            CustomListTile(
+              icon: Icons.wallet,
+              title: 'Wallet',
+              // subtitle: 'Wallet : ${wallet} ₫',
+              subtitle: 'Wallet : $walletBalance ₫',
+              onTap: () {
+                setState(() {
+                  isWalletHidden = !isWalletHidden;
+                });
+              },
+            ),
+            // TextButton(
+            //   onPressed: () {
+            //     setState(() {
+            //       isWalletHidden = !isWalletHidden;
+            //     });
+            //   },
+            //   child: Text(isWalletHidden ? 'Show Wallet' : 'Hide Wallet'),
+            // ),
             // CustomListTile to display Phone Number
             // const CustomListTile(
             //   icon: Icons.phone,

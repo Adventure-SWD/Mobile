@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:metrofood/Model/cart.dart';
@@ -20,12 +21,63 @@ class _CartPageState extends State<CartPage> {
   String? userId = "";
   String? tripId = "";
   String? storeId = "";
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   @override
   void initState() {
     super.initState();
     getInformation();
+    // configureFirebase();
   }
+
+  // void sendNotification() async{
+  //   final _firebaseMessaging = FirebaseMessaging.instance;
+  //
+  //   NotificationSettings settings = await _firebaseMessaging.requestPermission(
+  //     alert: true,
+  //     announcement: false,
+  //     badge: true,
+  //     carPlay: false,
+  //     criticalAlert: false,
+  //     provisional: false,
+  //     sound: true,
+  //   );
+
+  //   final message = {
+  //     'notification': {
+  //       'title': 'Order Confirmation',
+  //       'body': 'Your order has been placed successfully!',
+  //     },
+  //     'to': 'YOUR_FCM_TOKEN', // Replace with the user's FCM token
+  //   };
+  //
+  //   _firebaseMessaging.subscribeToTopic('all');
+  //   _firebaseMessaging.subscribeToTopic('user_${userId}');
+  //   _firebaseMessaging.subscribeToTopic('store_${storeId}');
+  //
+  //   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  //     print('Got a message whilst in the foreground!');
+  //     print('Message data: ${message.data}');
+  //
+  //     if (message.notification != null) {
+  //       print('Message also contained a notification: ${message.notification}');
+  //     }
+  //   });
+  //
+  //   _firebaseMessaging.subscribeToTopic('all');
+  //
+  // }
+  //
+  // Future<void> configureFirebase() async {
+  //   final settings = await _firebaseMessaging.requestPermission();
+  //   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+  //     print('Permission granted');
+  //     String? fcmToken = await _firebaseMessaging.getToken();
+  //     print('FCM Token: $fcmToken');
+  //   } else {
+  //     print('Permission denied');
+  //   }
+  // }
 
   void getInformation() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
