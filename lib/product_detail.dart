@@ -95,12 +95,18 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     children: [
                       Text(
                         product.categoryData.categoryName,
-                        style: Theme.of(context).textTheme.headline5,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         product.productName,
-                        style: Theme.of(context).textTheme.headline5,
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -113,23 +119,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                       const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: const Text("Thêm vào giỏ hàng"),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: const Text("Mua ngay"),
-                          ),
-                        ],
-                      ),
                     ],
                   ),
-                ),
-                // Các phần khác như phần "Sản phẩm liên quan", phần "Câu hỏi thường gặp", v.v.
+                ), // Các phần khác như phần "Sản phẩm liên quan", phần "Câu hỏi thường gặp", v.v.
               ]),
             ),
           ],
